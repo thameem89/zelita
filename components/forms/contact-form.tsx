@@ -1,111 +1,149 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { MessageCircle } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { createEnquiry } from "@/lib/services/enquiry-service";
 import { FormFieldError } from "../ui/form-field-error";
 
-type ContactState = {
-  name: string;
-  company: string;
-  email: string;
-  phone: string;
-  city: string;
-  subject: string;
-  message: string;
-  website: string;
-};
+const enquiryTypes = [
+  "Product enquiry",
+  "Bulk supply",
+  "Cleaning services",
+  "Industrial chemicals",
+  "Vendor partnership",
+  "General enquiry",
+];
 
-const initialState: ContactState = {
-  name: "",
-  company: "",
-  email: "",
-  phone: "",
-  city: "",
-  subject: "",
-  message: "",
-  website: "",
-};
+const contactSchema = z.object({
+  name: z.string().min(1, "Full name is required."),
+  company: z.string().optional(),
+  email: z.string().email("Enter a valid work email."),
+  phone: z.string().min(6, "Phone number is required."),
+  city: z.string().optional(),
+  enquiryType: z.string().min(1),
+  productRequired: z.string().optional(),
+  message: z.string().min(1, "Message is required."),
+  consent: z.boolean().refine(Boolean, "Please confirm consent."),
+  website: z.string().optional(),
+});
+
+type ContactFormValues = z.infer<typeof contactSchema>;
 
 export function ContactForm() {
-  const [form, setForm] = useState(initialState);
-  const [errors, setErrors] = useState<Partial<Record<keyof ContactState, string>>>({});
-  const [success, setSuccess] = useState("");
+  const {
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    register,
+    reset,
+    setError,
+    watch,
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      enquiryType: enquiryTypes[0],
+      consent: false,
+      website: "",
+    },
+  });
+  const success = watch("website") === "success";
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setSuccess("");
-    if (form.website.trim()) return;
-
-    const nextErrors: Partial<Record<keyof ContactState, string>> = {};
-    if (!form.name.trim()) nextErrors.name = "Name is required.";
-    if (!form.email.trim() && !form.phone.trim()) nextErrors.email = "Email or phone is required.";
-    if (!form.subject.trim() && !form.message.trim()) nextErrors.message = "Subject or message is required.";
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length) return;
+  async function submit(form: ContactFormValues) {
+    if (form.website && form.website !== "success") return;
 
     const result = await createEnquiry({
       enquiryType: "Contact",
       customerName: form.name,
-      companyName: form.company,
+      companyName: form.company ?? "",
       email: form.email,
       phone: form.phone,
-      city: form.city,
+      city: form.city ?? "",
       productId: "",
-      productName: "",
+      productName: form.productRequired ?? "",
       quantity: "",
-      subject: form.subject || "Website contact",
+      subject: form.productRequired
+        ? `${form.enquiryType}: ${form.productRequired}`
+        : form.enquiryType,
       message: form.message,
     });
 
     if (!result.ok) {
-      setErrors({ message: result.error });
+      setError("message", { message: result.error });
       return;
     }
 
-    setSuccess("Thank you. Your message has been saved for the Zelita team.");
-    setForm(initialState);
-    setErrors({});
+    reset({ enquiryType: enquiryTypes[0], consent: false, website: "success" });
   }
 
   return (
-    <form className="public-form" onSubmit={submit}>
-      {success ? <div className="success-message">{success}</div> : null}
-      <input className="honeypot" tabIndex={-1} autoComplete="off" value={form.website} onChange={(event) => setForm({ ...form, website: event.target.value })} aria-hidden="true" />
-      <label>
-        Name
-        <input value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} />
-        <FormFieldError message={errors.name} />
-      </label>
-      <label>
-        Company
-        <input value={form.company} onChange={(event) => setForm({ ...form, company: event.target.value })} />
-      </label>
+    <form className="public-form contact-form-card" onSubmit={handleSubmit(submit)}>
+      {success ? (
+        <div className="success-message">
+          Thank you. Your enquiry has been saved for the Zelita team. Expected
+          response time: within one business day.
+          <a href="https://wa.me/966567424517" rel="noreferrer" target="_blank">
+            <MessageCircle aria-hidden="true" size={16} strokeWidth={2.2} />
+            Continue on WhatsApp
+          </a>
+        </div>
+      ) : null}
+      <input className="honeypot" tabIndex={-1} autoComplete="off" {...register("website")} aria-hidden="true" />
       <div className="form-grid">
         <label>
-          Email
-          <input type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} />
-          <FormFieldError message={errors.email} />
+          Full name
+          <input {...register("name")} />
+          <FormFieldError message={errors.name?.message} />
         </label>
         <label>
-          Phone
-          <input value={form.phone} onChange={(event) => setForm({ ...form, phone: event.target.value })} />
+          Company name
+          <input {...register("company")} />
+        </label>
+      </div>
+      <div className="form-grid">
+        <label>
+          Work email
+          <input type="email" {...register("email")} />
+          <FormFieldError message={errors.email?.message} />
+        </label>
+        <label>
+          Phone number
+          <input placeholder="+966" {...register("phone")} />
+          <FormFieldError message={errors.phone?.message} />
+        </label>
+      </div>
+      <div className="form-grid">
+        <label>
+          City
+          <input {...register("city")} />
+        </label>
+        <label>
+          Enquiry type
+          <select {...register("enquiryType")}>
+            {enquiryTypes.map((type) => <option key={type}>{type}</option>)}
+          </select>
         </label>
       </div>
       <label>
-        City
-        <input value={form.city} onChange={(event) => setForm({ ...form, city: event.target.value })} />
-      </label>
-      <label>
-        Subject
-        <input value={form.subject} onChange={(event) => setForm({ ...form, subject: event.target.value })} />
+        Product or service required
+        <input {...register("productRequired")} />
       </label>
       <label>
         Message
-        <textarea rows={5} value={form.message} onChange={(event) => setForm({ ...form, message: event.target.value })} />
-        <FormFieldError message={errors.message} />
+        <textarea rows={5} {...register("message")} />
+        <FormFieldError message={errors.message?.message} />
       </label>
-      <button className="button primary" type="submit">
-        Send Message
+      <label>
+        Optional attachment
+        <input type="file" />
+      </label>
+      <label className="consent-row">
+        <input type="checkbox" {...register("consent")} />
+        I agree to be contacted by Zelita about this enquiry.
+        <FormFieldError message={errors.consent?.message} />
+      </label>
+      <button className="button primary" disabled={isSubmitting} type="submit">
+        {isSubmitting ? "Sending..." : "Send Enquiry"}
       </button>
     </form>
   );
