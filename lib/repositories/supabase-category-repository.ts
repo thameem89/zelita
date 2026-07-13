@@ -34,6 +34,7 @@ export const supabaseCategoryRepository: CategoryRepository = {
         .select("*")
         .order("display_order", { ascending: true });
       if (error) throw error;
+      if (!data?.length) return mockCategoryRepository.list();
       return (data ?? []).map(categoryFromRow);
     }, () => mockCategoryRepository.list());
   },

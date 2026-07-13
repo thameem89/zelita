@@ -2,14 +2,22 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ActiveBadge, StatusBadge } from "@/components/ui/badges";
-import { EmptyState, ErrorState, LoadingState } from "@/components/ui/state";
+import { ProductEmptyState } from "@/components/catalog/product-empty-state";
+import { ProductFilterSidebar } from "@/components/catalog/product-filter-sidebar";
+import { ProductGrid } from "@/components/catalog/product-grid";
+import { ProductHero } from "@/components/catalog/product-hero";
+import { ProductSearchToolbar, type CatalogSort } from "@/components/catalog/product-search-toolbar";
+import { ProcurementSupport } from "@/components/catalog/procurement-support";
+import { SelectedFilterChips } from "@/components/catalog/selected-filter-chips";
+import { ErrorState, LoadingState } from "@/components/ui/state";
 import { getActiveCategories } from "@/lib/services/category-service";
 import { getActiveProducts } from "@/lib/services/product-service";
 import type { Category } from "@/lib/types/category";
 import type { Product, ProductStatus } from "@/lib/types/product";
 import { SiteFooter } from "../site-footer";
 import { SiteNav } from "../site-nav";
+
+const statuses: ProductStatus[] = ["Available", "Limited Stock", "Made to Order", "On Request", "Out of Stock"];
 
 function ProductsPageContent() {
   const router = useRouter();
@@ -19,6 +27,8 @@ function ProductsPageContent() {
   const [activeCategory, setActiveCategory] = useState(searchParams.get("category") ?? "All");
   const [activeStatus, setActiveStatus] = useState(searchParams.get("status") ?? "All");
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const [sort, setSort] = useState<CatalogSort>((searchParams.get("sort") as CatalogSort) ?? "recommended");
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -37,132 +47,114 @@ function ProductsPageContent() {
     if (query.trim()) params.set("q", query.trim());
     if (activeCategory !== "All") params.set("category", activeCategory);
     if (activeStatus !== "All") params.set("status", activeStatus);
+    if (sort !== "recommended") params.set("sort", sort);
     const next = params.toString();
     router.replace(next ? `/products?${next}` : "/products", { scroll: false });
-  }, [activeCategory, activeStatus, query, router]);
+  }, [activeCategory, activeStatus, query, router, sort]);
 
   const visibleProducts = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
-    return products.filter((product) => {
-      const inCategory =
-        activeCategory === "All" || product.categoryId === activeCategory;
+    const filtered = products.filter((product) => {
+      const inCategory = activeCategory === "All" || product.categoryId === activeCategory;
       const inStatus = activeStatus === "All" || product.status === activeStatus;
-      const inQuery = `${product.name} ${product.categoryName} ${product.packSize} ${product.shortDescription}`
+      const inQuery = `${product.name} ${product.sku} ${product.categoryName} ${product.packSize} ${product.shortDescription}`
         .toLowerCase()
         .includes(normalizedQuery);
       return inCategory && inStatus && inQuery;
     });
-  }, [activeCategory, activeStatus, products, query]);
 
-  const statuses: ProductStatus[] = ["Available", "Limited Stock", "Made to Order", "On Request", "Out of Stock"];
+    return filtered.sort((a, b) => {
+      if (sort === "name-asc") return a.name.localeCompare(b.name);
+      if (sort === "name-desc") return b.name.localeCompare(a.name);
+      if (sort === "recent") return Date.parse(b.createdAt) - Date.parse(a.createdAt);
+      if (sort === "availability") return a.status.localeCompare(b.status);
+      return Number(b.featured) - Number(a.featured) || a.name.localeCompare(b.name);
+    });
+  }, [activeCategory, activeStatus, products, query, sort]);
 
   function clearFilters() {
     setQuery("");
     setActiveCategory("All");
     setActiveStatus("All");
+    setSort("recommended");
   }
 
   return (
-    <main>
+    <main className="catalog-page">
       <SiteNav />
+      <ProductHero />
 
-      <section className="catalog page-surface">
-        <div className="section-head">
-          <p className="eyebrow">Full Product Range</p>
-          <h1>Facility-care supplies, organized for procurement.</h1>
-        </div>
+      <section className="catalog-shell" id="catalog-results">
+        <ProductSearchToolbar
+          categories={categories}
+          statuses={statuses}
+          query={query}
+          category={activeCategory}
+          status={activeStatus}
+          sort={sort}
+          count={visibleProducts.length}
+          onQueryChange={setQuery}
+          onCategoryChange={setActiveCategory}
+          onStatusChange={setActiveStatus}
+          onSortChange={setSort}
+          onOpenFilters={() => setFiltersOpen(true)}
+        />
 
-        <div className="catalog-controls">
-          <input
-            aria-label="Search the product catalog"
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search products, categories, or pack sizes"
-            value={query}
+        <SelectedFilterChips
+          categories={categories}
+          query={query}
+          category={activeCategory}
+          status={activeStatus}
+          onQueryClear={() => setQuery("")}
+          onCategoryClear={() => setActiveCategory("All")}
+          onStatusClear={() => setActiveStatus("All")}
+          onClearAll={clearFilters}
+        />
+
+        <div className="catalog-layout">
+          <ProductFilterSidebar
+            categories={categories}
+            statuses={statuses}
+            products={products}
+            activeCategory={activeCategory}
+            activeStatus={activeStatus}
+            onCategoryChange={setActiveCategory}
+            onStatusChange={setActiveStatus}
+            onReset={clearFilters}
           />
-          <span>{visibleProducts.length} matching items</span>
+
+          <div className="mobile-filter-drawer" aria-hidden={!filtersOpen}>
+            <button className="mobile-filter-backdrop" type="button" onClick={() => setFiltersOpen(false)} aria-label="Close filters" />
+            <div className="mobile-filter-panel" role="dialog" aria-modal="true" aria-label="Product filters">
+              <div className="mobile-filter-head">
+                <strong>Filter products</strong>
+                <button type="button" onClick={() => setFiltersOpen(false)}>Close</button>
+              </div>
+              <ProductFilterSidebar
+                categories={categories}
+                statuses={statuses}
+                products={products}
+                activeCategory={activeCategory}
+                activeStatus={activeStatus}
+                onCategoryChange={setActiveCategory}
+                onStatusChange={setActiveStatus}
+                onReset={clearFilters}
+              />
+            </div>
+          </div>
+
+          <section className="catalog-results-panel" aria-live="polite">
+            <div className="catalog-results-head">
+              <p>{loading ? "Loading products..." : `Showing ${visibleProducts.length} products`}</p>
+            </div>
+            {loading ? <LoadingState label="Loading Zelita products..." /> : null}
+            {error ? <ErrorState message={error} /> : null}
+            {!loading && !error && !visibleProducts.length ? <ProductEmptyState onClear={clearFilters} /> : null}
+            {!loading && !error && visibleProducts.length ? <ProductGrid products={visibleProducts} /> : null}
+          </section>
         </div>
 
-        <div className="category-rail" aria-label="Product categories">
-          <button
-            className={activeCategory === "All" ? "active" : ""}
-            onClick={() => setActiveCategory("All")}
-            type="button"
-          >
-            All
-          </button>
-          {categories.map((category) => (
-            <button
-              className={activeCategory === category.id ? "active" : ""}
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              type="button"
-            >
-              {category.name}
-            </button>
-          ))}
-        </div>
-
-        <div className="category-rail compact" aria-label="Product status">
-          <button className={activeStatus === "All" ? "active" : ""} onClick={() => setActiveStatus("All")} type="button">
-            All Statuses
-          </button>
-          {statuses.map((status) => (
-            <button className={activeStatus === status ? "active" : ""} key={status} onClick={() => setActiveStatus(status)} type="button">
-              {status}
-            </button>
-          ))}
-          {(query || activeCategory !== "All" || activeStatus !== "All") ? (
-            <button type="button" onClick={clearFilters}>
-              Clear filters
-            </button>
-          ) : null}
-        </div>
-
-        {loading ? <LoadingState label="Loading Zelita products..." /> : null}
-        {error ? <ErrorState message={error} /> : null}
-        {!loading && !error && !visibleProducts.length ? (
-          <EmptyState title="No products found" message="Try clearing filters or searching for another product category." action={<button className="button dark" type="button" onClick={clearFilters}>Clear filters</button>} />
-        ) : null}
-
-        {!loading && !error && visibleProducts.length ? (
-          <div className="public-product-grid" role="list">
-            {visibleProducts.map((product) => (
-              <article className="public-product-card" key={product.id} role="listitem">
-                <img src={product.imageUrl} alt="" />
-                <div>
-                  <strong>{product.name}</strong>
-                  <small>{product.categoryName}</small>
-                  <p>{product.shortDescription}</p>
-                </div>
-                <div className="product-card-meta">
-                  <span>{product.packSize}</span>
-                  <StatusBadge status={product.status} />
-                  <ActiveBadge active={product.isActive} />
-                </div>
-                <div className="product-card-actions">
-                  <a className="button dark" href={`/products/${product.slug}`}>View Product</a>
-                  <a className="button primary" href={`/request-quote?product=${product.id}`}>Request Quote</a>
-                </div>
-              </article>
-            ))
-            }
-          </div>
-        ) : null}
-
-        <section className="procurement-band" aria-label="Procurement support">
-          <div>
-            <p className="eyebrow">Procurement Support</p>
-            <h2>
-              One supplier for everyday care, controlled replenishment, and
-              contract work.
-            </h2>
-          </div>
-          <div className="procurement-list">
-            <span>Stock availability checks</span>
-            <span>Pack-size coordination</span>
-            <span>Project supply planning</span>
-          </div>
-        </section>
+        <ProcurementSupport />
       </section>
       <SiteFooter />
     </main>
@@ -173,9 +165,9 @@ export default function ProductsPage() {
   return (
     <Suspense
       fallback={
-        <main>
+        <main className="catalog-page">
           <SiteNav />
-          <section className="catalog page-surface">
+          <section className="catalog-shell">
             <LoadingState label="Loading Zelita products..." />
           </section>
           <SiteFooter />

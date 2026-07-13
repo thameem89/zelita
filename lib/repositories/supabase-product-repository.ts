@@ -34,6 +34,7 @@ export const supabaseProductRepository: ProductRepository = {
         .select("*")
         .order("updated_at", { ascending: false });
       if (error) throw error;
+      if (!data?.length) return mockProductRepository.list();
       return (data ?? []).map(productFromRow);
     }, () => mockProductRepository.list());
   },
