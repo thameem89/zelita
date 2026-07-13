@@ -2,10 +2,10 @@ import { SiteFooter } from "./site-footer";
 import { SiteNav } from "./site-nav";
 
 const productCategories = [
-  { name: "Cleaning Chemicals", image: "/zelita-hero-premium.png" },
-  { name: "Waste Management", image: "/zelita-facility-hero.png" },
-  { name: "Janitorial Products", image: "/zelita-facility-hero.png" },
-  { name: "Aerosol Products", image: "/zelita-hero-premium.png" },
+  { name: "Cleaning Chemicals", image: "/zelita-supplies-set.png" },
+  { name: "Waste Management", image: "/zelita-waste-bins.png" },
+  { name: "Janitorial Products", image: "/zelita-janitorial-cart.png" },
+  { name: "Aerosol Products", image: "/zelita-aerosol-products.png" },
 ];
 
 const services = [
@@ -31,7 +31,7 @@ export default function Home() {
       <section className="industrial-hero" id="home">
         <img
           className="industrial-hero-image"
-          src="/zelita-facility-hero.png"
+          src="/zelita-facility-cleaning.png"
           alt="Professional cleaning team maintaining a modern commercial facility"
         />
         <div className="industrial-hero-overlay" />
@@ -94,7 +94,7 @@ export default function Home() {
         <div className="home-shell company-grid">
           <img
             className="company-image"
-            src="/zelita-facility-hero.png"
+            src="/zelita-supplies-set.png"
             alt="Modern commercial facility maintained by a professional cleaning team"
           />
           <div className="company-copy">
@@ -123,7 +123,16 @@ export default function Home() {
           <div className="service-showcase-grid">
             {services.map((service) => (
               <article className="service-showcase-card" key={service.title}>
-                <img src="/zelita-facility-hero.png" alt="" />
+                <img
+                  src={
+                    service.title === "Industrial Cleaning"
+                      ? "/zelita-facility-cleaning.png"
+                      : service.title === "Glass & Facade Cleaning"
+                        ? "/zelita-janitorial-cart.png"
+                        : "/zelita-packaging-products.png"
+                  }
+                  alt=""
+                />
                 <div>
                   <h3>{service.title}</h3>
                   <p>{service.description}</p>
