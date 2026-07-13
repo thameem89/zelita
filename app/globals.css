@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  --font-montserrat: "Montserrat";
   --font-display: var(--font-montserrat), Arial, sans-serif;
   --navy: #101c2d;
   --navy-2: #14243a;
