@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageCircle } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createEnquiry } from "@/lib/services/enquiry-service";
@@ -38,7 +39,6 @@ export function ContactForm() {
     register,
     reset,
     setError,
-    watch,
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -47,7 +47,7 @@ export function ContactForm() {
       website: "",
     },
   });
-  const success = watch("website") === "success";
+  const [success, setSuccess] = useState(false);
 
   async function submit(form: ContactFormValues) {
     if (form.website && form.website !== "success") return;
@@ -73,7 +73,8 @@ export function ContactForm() {
       return;
     }
 
-    reset({ enquiryType: enquiryTypes[0], consent: false, website: "success" });
+    reset({ enquiryType: enquiryTypes[0], consent: false, website: "" });
+    setSuccess(true);
   }
 
   return (
