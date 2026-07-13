@@ -11,6 +11,11 @@ export default function ProductsPage() {
 
   useEffect(() => {
     setProducts(readCatalog());
+
+    const category = new URLSearchParams(window.location.search).get("category");
+    if (category && categories.includes(category)) {
+      setActiveCategory(category);
+    }
   }, []);
 
   const visibleProducts = useMemo(() => {

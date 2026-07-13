@@ -13,6 +13,7 @@ import { SiteFooter } from "../site-footer";
 export default function AdminPage() {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [query, setQuery] = useState("");
+  const [notice, setNotice] = useState("");
   const [form, setForm] = useState({
     name: "",
     category: categories[0],
@@ -56,6 +57,7 @@ export default function AdminPage() {
       pack: "",
       status: "Available",
     });
+    setNotice(`${nextProducts[0].name} has been added to the catalog.`);
   }
 
   return (
@@ -86,11 +88,12 @@ export default function AdminPage() {
             <label>
               Product name
               <input
-                onChange={(event) =>
-                  setForm({ ...form, name: event.target.value })
-                }
-                placeholder="e.g. Floor cleaner"
-                value={form.name}
+              onChange={(event) =>
+                setForm({ ...form, name: event.target.value })
+              }
+              placeholder="e.g. Floor cleaner"
+              required
+              value={form.name}
               />
             </label>
             <label>
@@ -109,11 +112,12 @@ export default function AdminPage() {
             <label>
               Pack size
               <input
-                onChange={(event) =>
-                  setForm({ ...form, pack: event.target.value })
-                }
-                placeholder="e.g. 4 x 4L"
-                value={form.pack}
+              onChange={(event) =>
+                setForm({ ...form, pack: event.target.value })
+              }
+              placeholder="e.g. 4 x 4L"
+              required
+              value={form.pack}
               />
             </label>
             <label>
@@ -129,6 +133,7 @@ export default function AdminPage() {
             <button className="button primary" type="submit">
               Add to Catalog
             </button>
+            {notice ? <p className="form-notice" role="status">{notice}</p> : null}
           </form>
 
           <div className="inventory">
@@ -159,6 +164,7 @@ export default function AdminPage() {
                       );
                       setProducts(nextProducts);
                       writeCatalog(nextProducts);
+                      setNotice(`${product.name} has been removed from the catalog.`);
                     }}
                     type="button"
                   >

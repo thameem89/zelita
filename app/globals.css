@@ -1217,6 +1217,71 @@ a:focus-visible {
   font-size: clamp(30px, 3.2vw, 46px);
 }
 
+.contact-layout {
+  align-items: start;
+  display: grid;
+  gap: 42px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 0.85fr);
+}
+
+.home-contact .eyebrow {
+  color: #d0d6ff;
+}
+
+.quote-form {
+  background: white;
+  border: 1px solid rgba(49, 58, 150, 0.18);
+  color: var(--navy);
+  display: grid;
+  gap: 13px;
+  padding: 22px;
+}
+
+.quote-form label {
+  color: var(--navy);
+  display: grid;
+  font-size: 11px;
+  font-weight: 800;
+  gap: 6px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.quote-form-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.quote-form input,
+.quote-form select,
+.quote-form textarea {
+  background: #f7f8ff;
+  border: 1px solid rgba(49, 58, 150, 0.2);
+  border-radius: 0;
+  color: var(--navy);
+  font: inherit;
+  font-size: 13px;
+  padding: 11px 12px;
+  width: 100%;
+}
+
+.quote-form textarea {
+  resize: vertical;
+}
+
+.quote-form .button {
+  justify-self: start;
+}
+
+.quote-notice,
+.form-notice {
+  color: var(--blue);
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+}
+
 @keyframes rise-in {
   from {
     opacity: 0;
@@ -1301,7 +1366,8 @@ a:focus-visible {
   .service-list,
   .category-grid,
   .procurement-band,
-  .footer-main {
+  .footer-main,
+  .contact-layout {
     grid-template-columns: 1fr;
   }
 
@@ -1453,5 +1519,9 @@ a:focus-visible {
   .contact-inner {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .quote-form-row {
+    grid-template-columns: 1fr;
   }
 }

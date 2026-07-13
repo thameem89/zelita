@@ -1,10 +1,27 @@
 import { SiteFooter } from "./site-footer";
+import { QuoteForm } from "./quote-form";
 
 const productCategories = [
-  { name: "Cleaning Chemicals", image: "/zelita-hero-premium.png" },
-  { name: "Waste Management", image: "/zelita-facility-hero.png" },
-  { name: "Janitorial Products", image: "/zelita-facility-hero.png" },
-  { name: "Aerosol Products", image: "/zelita-hero-premium.png" },
+  {
+    name: "Cleaning Chemicals",
+    image: "/zelita-hero-premium.png",
+    category: "Cleaning Chemicals",
+  },
+  {
+    name: "Waste Management",
+    image: "/zelita-facility-hero.png",
+    category: "Waste Management",
+  },
+  {
+    name: "Janitorial Products",
+    image: "/zelita-facility-hero.png",
+    category: "Janitorial Products",
+  },
+  {
+    name: "Aerosol Products",
+    image: "/zelita-hero-premium.png",
+    category: "Aerosol Products",
+  },
 ];
 
 const services = [
@@ -95,7 +112,11 @@ export default function Home() {
           </div>
           <div className="category-showcase-grid">
             {productCategories.map((category) => (
-              <a className="showcase-card" href="/products" key={category.name}>
+              <a
+                className="showcase-card"
+                href={`/products?category=${encodeURIComponent(category.category)}`}
+                key={category.name}
+              >
                 <img src={category.image} alt="" />
                 <h3>{category.name}</h3>
                 <span>View products</span>
@@ -154,12 +175,12 @@ export default function Home() {
       </section>
 
       <section className="contact home-contact" id="contact">
-        <div className="home-shell contact-inner">
+        <div className="home-shell contact-layout">
           <div>
             <p className="eyebrow">Partnership Desk</p>
             <h2>Ready to discuss supply, services, or a custom quote?</h2>
           </div>
-          <a className="button secondary" href="mailto:info@zelitasa.com">Contact Zelita</a>
+          <QuoteForm />
         </div>
       </section>
       <SiteFooter />
