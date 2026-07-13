@@ -1,9 +1,9 @@
-import { mockCategoryRepository } from "../repositories/mock-category-repository";
+import { supabaseCategoryRepository } from "../repositories/supabase-category-repository";
 import type { CategoryInput } from "../types/category";
 import type { ServiceResult } from "../types/common";
 import { normalize, slugify } from "./utils";
 
-const repository = mockCategoryRepository;
+const repository = supabaseCategoryRepository;
 
 export async function getCategories() {
   return (await repository.list()).sort((a, b) => a.displayOrder - b.displayOrder);

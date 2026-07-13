@@ -1,8 +1,8 @@
-import { mockEnquiryRepository } from "../repositories/mock-enquiry-repository";
+import { supabaseEnquiryRepository } from "../repositories/supabase-enquiry-repository";
 import type { ServiceResult } from "../types/common";
 import type { Enquiry, EnquiryInput, EnquiryStatus } from "../types/enquiry";
 
-const repository = mockEnquiryRepository;
+const repository = supabaseEnquiryRepository;
 
 export async function getEnquiries() {
   return (await repository.list()).sort(

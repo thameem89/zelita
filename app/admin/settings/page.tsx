@@ -4,9 +4,11 @@ import { useState } from "react";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { getMockAdminCredentials, resetMockSession } from "@/lib/services/auth-service";
 import { resetMockData } from "@/lib/services/mock-reset-service";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
 
 export default function AdminSettingsPage() {
   const credentials = getMockAdminCredentials();
+  const supabaseConfigured = isSupabaseConfigured();
   const [confirmReset, setConfirmReset] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -17,8 +19,8 @@ export default function AdminSettingsPage() {
       <section className="admin-two-col">
         <article className="admin-panel">
           <h2>Status</h2>
-          <p><strong>Mock backend:</strong> Active, using browser localStorage through repositories.</p>
-          <p><strong>Planned Supabase backend:</strong> Not connected yet.</p>
+          <p><strong>Supabase config:</strong> {supabaseConfigured ? "Connected with local.env credentials." : "Missing environment variables."}</p>
+          <p><strong>Mock fallback:</strong> Active. If Supabase tables/RLS are not ready, repositories fall back to local mock data.</p>
           <p><strong>Current mock admin:</strong> {credentials.email}</p>
           <div className="quick-actions">
             <button className="button primary" type="button" onClick={() => setConfirmReset(true)}>Reset Mock Data</button>
@@ -28,9 +30,9 @@ export default function AdminSettingsPage() {
         <article className="admin-panel">
           <h2>Supabase integration checklist</h2>
           <ul className="checklist">
-            <li>Create Supabase project</li>
-            <li>Add environment variables</li>
-            <li>Create database schema</li>
+            <li>Supabase project created</li>
+            <li>Local environment variables added</li>
+            <li>Create database schema from <code>supabase/schema.sql</code></li>
             <li>Configure authentication</li>
             <li>Configure Row Level Security</li>
             <li>Create storage buckets</li>

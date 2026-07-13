@@ -1,9 +1,9 @@
-import { mockProductRepository } from "../repositories/mock-product-repository";
+import { supabaseProductRepository } from "../repositories/supabase-product-repository";
 import type { ServiceResult } from "../types/common";
 import type { Product, ProductInput } from "../types/product";
 import { normalize, slugify } from "./utils";
 
-const repository = mockProductRepository;
+const repository = supabaseProductRepository;
 
 export async function getProducts() {
   return repository.list();
