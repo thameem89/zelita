@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ActiveBadge, StatusBadge } from "@/components/ui/badges";
 import { EmptyState, ErrorState, LoadingState } from "@/components/ui/state";
@@ -9,8 +9,9 @@ import { getActiveProducts } from "@/lib/services/product-service";
 import type { Category } from "@/lib/types/category";
 import type { Product, ProductStatus } from "@/lib/types/product";
 import { SiteFooter } from "../site-footer";
+import { SiteNav } from "../site-nav";
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
@@ -63,21 +64,7 @@ export default function ProductsPage() {
 
   return (
     <main>
-      <nav className="topbar" aria-label="Main navigation">
-          <a className="brand" href="/" aria-label="Zelita home">
-          <img
-            className="brand-logo"
-            src="/zelita-logo.png"
-            alt="Zelita Ventures Co. LLC"
-          />
-        </a>
-        <div className="nav-links">
-          <a href="/">Home</a>
-          <a href="/products">Products</a>
-          <a href="/admin">Add Products</a>
-          <a href="/contact">Contact</a>
-        </div>
-      </nav>
+      <SiteNav />
 
       <section className="catalog page-surface">
         <div className="section-head">
@@ -179,5 +166,23 @@ export default function ProductsPage() {
       </section>
       <SiteFooter />
     </main>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense
+      fallback={
+        <main>
+          <SiteNav />
+          <section className="catalog page-surface">
+            <LoadingState label="Loading Zelita products..." />
+          </section>
+          <SiteFooter />
+        </main>
+      }
+    >
+      <ProductsPageContent />
+    </Suspense>
   );
 }

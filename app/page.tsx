@@ -1,4 +1,5 @@
 import { SiteFooter } from "./site-footer";
+import { SiteNav } from "./site-nav";
 
 const productCategories = [
   { name: "Cleaning Chemicals", image: "/zelita-hero-premium.png" },
@@ -25,23 +26,7 @@ const services = [
 export default function Home() {
   return (
     <main className="home-page">
-      <nav className="topbar home-nav" aria-label="Main navigation">
-        <a className="brand" href="#home" aria-label="Zelita home">
-          <img
-            className="brand-logo"
-            src="/zelita-logo.png"
-            alt="Zelita Ventures Co. LLC"
-          />
-        </a>
-        <div className="nav-links">
-          <a href="#home">Home</a>
-          <a href="#about">About Us</a>
-          <a href="/products">Products</a>
-          <a href="#services">Cleaning Services</a>
-          <a href="#contact">Contact Us</a>
-        </div>
-        <a className="nav-quote" href="/request-quote">Request a Quote</a>
-      </nav>
+      <SiteNav tone="home" />
 
       <section className="industrial-hero" id="home">
         <img
@@ -124,7 +109,7 @@ export default function Home() {
               <span><strong>50+</strong> specialized solutions</span>
               <span><strong>Multi-sector</strong> business support</span>
             </div>
-            <a className="button dark" href="#contact">Learn More About Us</a>
+            <a className="button dark" href="/about">Learn More About Us</a>
           </div>
         </div>
       </section>
@@ -142,13 +127,13 @@ export default function Home() {
                 <div>
                   <h3>{service.title}</h3>
                   <p>{service.description}</p>
-                  <a href="#contact">View service</a>
+                  <a href="/services">View service</a>
                 </div>
               </article>
             ))}
           </div>
           <div className="services-action">
-            <a className="button primary" href="#contact">View All Services</a>
+            <a className="button primary" href="/services">View All Services</a>
           </div>
         </div>
       </section>
