@@ -1,3 +1,5 @@
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+
 export function SiteFooter() {
   return (
     <footer className="site-footer" id="footer">
@@ -13,17 +15,20 @@ export function SiteFooter() {
             Arabia and the wider Middle East.
           </p>
           <div className="social-links" aria-label="Zelita online channels">
-            <a href="https://www.zelitasa.com" rel="noreferrer" target="_blank">
-              Website
-            </a>
             <a
+              aria-label="WhatsApp Zelita"
               href="https://wa.me/966567424517"
               rel="noreferrer"
               target="_blank"
+              title="WhatsApp"
             >
-              WhatsApp
+              <MessageCircle aria-hidden="true" size={19} strokeWidth={2.2} />
+              <span className="sr-only">WhatsApp</span>
             </a>
-            <a href="mailto:info@zelitasa.com">Email</a>
+            <a aria-label="Email Zelita" href="mailto:info@zelitasa.com" title="Email">
+              <Mail aria-hidden="true" size={19} strokeWidth={2.2} />
+              <span className="sr-only">Email</span>
+            </a>
           </div>
         </section>
 
@@ -37,10 +42,13 @@ export function SiteFooter() {
 
         <section className="footer-column" aria-labelledby="footer-contact">
           <p className="footer-label" id="footer-contact">Contact</p>
-          <a href="tel:+966567424517">+966 56 742 4517</a>
-          <a href="mailto:info@zelitasa.com">info@zelitasa.com</a>
-          <a href="https://www.zelitasa.com" rel="noreferrer" target="_blank">
-            www.zelitasa.com
+          <a className="footer-contact-link" href="tel:+966567424517">
+            <Phone aria-hidden="true" size={15} strokeWidth={2.2} />
+            <span>+966 56 742 4517</span>
+          </a>
+          <a className="footer-contact-link" href="mailto:info@zelitasa.com">
+            <Mail aria-hidden="true" size={15} strokeWidth={2.2} />
+            <span>info@zelitasa.com</span>
           </a>
           <address>
             Building no. 9089-5044, 5A Street<br />
@@ -62,6 +70,7 @@ export function SiteFooter() {
             rel="noreferrer"
             target="_blank"
           >
+            <MapPin aria-hidden="true" size={15} strokeWidth={2.2} />
             Open in Maps
           </a>
         </section>

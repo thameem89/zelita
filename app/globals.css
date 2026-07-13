@@ -776,6 +776,7 @@ a:focus-visible {
 }
 
 .footer-column a,
+.footer-contact-link,
 .social-links a {
   color: var(--blue);
   font-size: 13px;
@@ -784,6 +785,7 @@ a:focus-visible {
 }
 
 .footer-column a:hover,
+.footer-contact-link:hover,
 .social-links a:hover {
   color: var(--red);
   transform: translateX(2px);
@@ -800,7 +802,38 @@ a:focus-visible {
 .social-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 8px;
+}
+
+.sr-only {
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+  clip: rect(0, 0, 0, 0);
+}
+
+.social-links a {
+  align-items: center;
+  border: 1px solid rgba(49, 58, 150, 0.25);
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.social-links a:hover {
+  border-color: var(--red);
+}
+
+.footer-contact-link,
+.map-link {
+  align-items: center;
+  display: inline-flex;
+  gap: 7px;
 }
 
 .footer-map {
@@ -812,7 +845,6 @@ a:focus-visible {
 
 .map-link {
   color: var(--blue);
-  display: inline-flex;
   font-size: 13px;
   font-weight: 800;
   padding-bottom: 7px;
