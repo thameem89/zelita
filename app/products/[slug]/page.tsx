@@ -8,6 +8,7 @@ import { EmptyState, LoadingState } from "@/components/ui/state";
 import { getActiveProducts, getProductBySlug } from "@/lib/services/product-service";
 import type { Product } from "@/lib/types/product";
 import { SiteFooter } from "../../site-footer";
+import { SiteNav } from "../../site-nav";
 
 export default function ProductDetailPage() {
   const params = useParams<{ slug: string }>();
@@ -34,7 +35,11 @@ export default function ProductDetailPage() {
   if (loading) {
     return (
       <main>
-        <LoadingState label="Loading product details..." />
+        <SiteNav />
+        <section className="catalog page-surface">
+          <LoadingState label="Loading product details..." />
+        </section>
+        <SiteFooter />
       </main>
     );
   }
@@ -42,10 +47,7 @@ export default function ProductDetailPage() {
   if (!product) {
     return (
       <main>
-        <nav className="topbar" aria-label="Main navigation">
-          <a className="brand" href="/"><img className="brand-logo" src="/zelita-logo.png" alt="Zelita Ventures Co. LLC" /></a>
-          <div className="nav-links"><a href="/">Home</a><a href="/products">Products</a><a href="/contact">Contact</a></div>
-        </nav>
+        <SiteNav />
         <section className="catalog page-surface">
           <EmptyState title="Product not found" message="This product may be inactive or unavailable in the mock catalog." action={<a className="button dark" href="/products">Back to Products</a>} />
         </section>
@@ -56,10 +58,7 @@ export default function ProductDetailPage() {
 
   return (
     <main>
-      <nav className="topbar" aria-label="Main navigation">
-        <a className="brand" href="/"><img className="brand-logo" src="/zelita-logo.png" alt="Zelita Ventures Co. LLC" /></a>
-        <div className="nav-links"><a href="/">Home</a><a href="/products">Products</a><a href="/contact">Contact</a></div>
-      </nav>
+      <SiteNav />
       <section className="product-detail page-surface">
         <div className="product-detail-grid">
           <div>

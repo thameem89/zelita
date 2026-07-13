@@ -26,7 +26,7 @@ const services = [
 export default function Home() {
   return (
     <main className="home-page">
-      <SiteNav tone="home" />
+      <SiteNav />
 
       <section className="industrial-hero" id="home">
         <img
