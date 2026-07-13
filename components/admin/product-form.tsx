@@ -1,0 +1,129 @@
+"use client";
+
+import { FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getCategories } from "@/lib/services/category-service";
+import { createProduct, updateProduct } from "@/lib/services/product-service";
+import { slugify } from "@/lib/services/utils";
+import type { Category } from "@/lib/types/category";
+import type { Product, ProductInput, ProductStatus } from "@/lib/types/product";
+import { FormFieldError } from "../ui/form-field-error";
+
+const statuses: ProductStatus[] = ["Available", "Limited Stock", "Made to Order", "On Request", "Out of Stock"];
+
+function blankProduct(category?: Category): ProductInput {
+  return {
+    name: "",
+    slug: "",
+    sku: "",
+    categoryId: category?.id ?? "",
+    categoryName: category?.name ?? "",
+    shortDescription: "",
+    description: "",
+    packSize: "",
+    status: "Available",
+    availability: "",
+    minimumOrderQuantity: "",
+    imageUrl: "/zelita-cleaning-products.png",
+    gallery: [],
+    brochureUrl: "",
+    safetySheetUrl: "",
+    featured: false,
+    isActive: true,
+  };
+}
+
+export function ProductForm({ product }: { product?: Product }) {
+  const router = useRouter();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [form, setForm] = useState<ProductInput>(product ?? blankProduct());
+  const [galleryText, setGalleryText] = useState(product?.gallery.join("\n") ?? "");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    getCategories().then((items) => {
+      setCategories(items);
+      if (!product && items[0]) setForm((current) => ({ ...current, categoryId: items[0].id, categoryName: items[0].name }));
+    });
+  }, [product]);
+
+  function setName(name: string) {
+    setForm((current) => ({
+      ...current,
+      name,
+      slug: current.slug ? current.slug : slugify(name),
+    }));
+  }
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSuccess("");
+    const category = categories.find((item) => item.id === form.categoryId);
+    const input: ProductInput = {
+      ...form,
+      categoryName: category?.name ?? form.categoryName,
+      gallery: galleryText.split("\n").map((item) => item.trim()).filter(Boolean),
+    };
+    const localErrors: Record<string, string> = {};
+    if (!input.name.trim()) localErrors.name = "Product name is required.";
+    if (!input.slug.trim()) localErrors.slug = "Slug is required.";
+    if (!input.categoryId) localErrors.categoryId = "Category is required.";
+    if (!input.shortDescription.trim()) localErrors.shortDescription = "Short description is required.";
+    if (!input.packSize.trim()) localErrors.packSize = "Pack size is required.";
+    setErrors(localErrors);
+    if (Object.keys(localErrors).length) return;
+
+    const result = product ? await updateProduct(product.id, input) : await createProduct(input);
+    if (!result.ok) {
+      setErrors({ form: result.error });
+      return;
+    }
+    setSuccess(result.message ?? "Saved.");
+    setTimeout(() => router.push("/admin/products"), 650);
+  }
+
+  return (
+    <form className="admin-form" onSubmit={submit}>
+      {errors.form ? <div className="form-error-banner">{errors.form}</div> : null}
+      {success ? <div className="success-message">{success}</div> : null}
+      <div className="form-grid">
+        <label>Product name<input value={form.name} onChange={(event) => setName(event.target.value)} /><FormFieldError message={errors.name} /></label>
+        <label>Slug<input value={form.slug} onChange={(event) => setForm({ ...form, slug: slugify(event.target.value) })} /><FormFieldError message={errors.slug} /></label>
+      </div>
+      <div className="form-grid">
+        <label>SKU<input value={form.sku} onChange={(event) => setForm({ ...form, sku: event.target.value })} /></label>
+        <label>Category<select value={form.categoryId} onChange={(event) => {
+          const category = categories.find((item) => item.id === event.target.value);
+          setForm({ ...form, categoryId: event.target.value, categoryName: category?.name ?? "" });
+        }}>{categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}</select><FormFieldError message={errors.categoryId} /></label>
+      </div>
+      <label>Short description<input value={form.shortDescription} onChange={(event) => setForm({ ...form, shortDescription: event.target.value })} /><FormFieldError message={errors.shortDescription} /></label>
+      <label>Full description<textarea rows={5} value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} /></label>
+      <div className="form-grid">
+        <label>Pack size<input value={form.packSize} onChange={(event) => setForm({ ...form, packSize: event.target.value })} /><FormFieldError message={errors.packSize} /></label>
+        <label>Status<select value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value as ProductStatus })}>{statuses.map((status) => <option key={status}>{status}</option>)}</select></label>
+      </div>
+      <div className="form-grid">
+        <label>Availability details<input value={form.availability} onChange={(event) => setForm({ ...form, availability: event.target.value })} /></label>
+        <label>Minimum order quantity<input value={form.minimumOrderQuantity} onChange={(event) => setForm({ ...form, minimumOrderQuantity: event.target.value })} /></label>
+      </div>
+      <label>Main image URL<input value={form.imageUrl} onChange={(event) => setForm({ ...form, imageUrl: event.target.value })} /></label>
+      {form.imageUrl ? <img className="image-preview" src={form.imageUrl} alt="" /> : null}
+      <label>Additional gallery image URLs<textarea rows={4} value={galleryText} onChange={(event) => setGalleryText(event.target.value)} placeholder="One image URL per line" /></label>
+      <div className="form-grid">
+        <label>Brochure URL<input value={form.brochureUrl} onChange={(event) => setForm({ ...form, brochureUrl: event.target.value })} /></label>
+        <label>Safety sheet URL<input value={form.safetySheetUrl} onChange={(event) => setForm({ ...form, safetySheetUrl: event.target.value })} /></label>
+      </div>
+      <p className="demo-note">Supabase Storage upload will be connected in the backend phase.</p>
+      <div className="check-row">
+        <label><input type="checkbox" checked={form.featured} onChange={(event) => setForm({ ...form, featured: event.target.checked })} /> Featured</label>
+        <label><input type="checkbox" checked={form.isActive} onChange={(event) => setForm({ ...form, isActive: event.target.checked })} /> Active</label>
+      </div>
+      <div className="form-actions">
+        <a className="button dark" href="/admin/products">Cancel</a>
+        <button className="button primary" type="submit">Save Product</button>
+      </div>
+    </form>
+  );
+}
