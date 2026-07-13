@@ -4,21 +4,25 @@ import { SiteNav } from "../site-nav";
 const services = [
   {
     title: "Industrial Cleaning",
+    image: "/zelita-service-industrial-cleaning.webp",
     description:
       "Planned cleaning support for warehouses, industrial sites, factories, commercial buildings, and operational facilities.",
   },
   {
     title: "Glass & Facade Cleaning",
+    image: "/zelita-service-facade-cleaning.webp",
     description:
       "Exterior and interior glass care for offices, towers, showrooms, retail spaces, and premium commercial environments.",
   },
   {
     title: "Supply & Replenishment",
+    image: "/zelita-service-supply-replenishment.webp",
     description:
       "Routine supply planning for cleaning chemicals, tissues, dispensers, waste products, janitorial tools, and site consumables.",
   },
   {
     title: "Contract Support",
+    image: "/zelita-service-contract-support.webp",
     description:
       "Long-term supply coordination and professional cleaning support for major businesses, projects, and multi-site teams.",
   },
@@ -31,8 +35,8 @@ export default function ServicesPage() {
       <section className="detail-hero">
         <img
           className="detail-hero-image"
-          src="/zelita-hero-premium.png"
-          alt="Premium cleaning and facility-care supplies arranged for business use"
+          src="/zelita-service-contract-support.webp"
+          alt="Professional cleaning team working in a modern commercial atrium"
         />
         <div className="detail-hero-overlay" />
         <div className="home-shell detail-hero-content">
@@ -55,7 +59,7 @@ export default function ServicesPage() {
           <div className="service-detail-grid">
             {services.map((service) => (
               <article key={service.title}>
-                <img src="/zelita-facility-hero.png" alt="" />
+                <img src={service.image} alt={`${service.title} service by Zelita`} />
                 <div>
                   <h3>{service.title}</h3>
                   <p>{service.description}</p>
