@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  --font-montserrat: "Montserrat";
   --font-display: var(--font-montserrat), Arial, sans-serif;
   --navy: #101c2d;
   --navy-2: #14243a;
@@ -20,6 +21,7 @@
 
 * {
   box-sizing: border-box;
+  font-family: var(--font-montserrat), Arial, sans-serif;
 }
 
 html {
@@ -42,7 +44,9 @@ a {
 
 button,
 input,
-select {
+select,
+textarea,
+option {
   font: inherit;
 }
 
