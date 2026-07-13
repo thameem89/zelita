@@ -1171,8 +1171,10 @@ a:focus-visible {
 .service-showcase-card img {
   aspect-ratio: 1.6;
   filter: saturate(0.76);
-  object-fit: cover;
-  object-position: 75% center;
+  background: rgba(255, 255, 255, 0.08);
+  object-fit: contain;
+  object-position: center;
+  padding: 10px;
   width: 100%;
 }
 
@@ -1305,7 +1307,7 @@ a:focus-visible {
 
 .detail-hero-image {
   object-fit: cover;
-  object-position: center;
+  object-position: center 38%;
 }
 
 .about-hero .detail-hero-image {
@@ -1452,9 +1454,11 @@ a:focus-visible {
 }
 
 .service-detail-grid img {
-  aspect-ratio: 1.45;
-  object-fit: cover;
-  object-position: 74% center;
+  aspect-ratio: 1.18;
+  background: #f3f1eb;
+  object-fit: contain;
+  object-position: center;
+  padding: 10px;
   width: 100%;
 }
 
