@@ -20,7 +20,6 @@ export function SiteNav({ tone = "default" }: SiteNavProps) {
         <a href="/products">Products</a>
         <a href="/services">Cleaning Services</a>
         <a href="/contact">Contact Us</a>
-        <a href="/admin/products/new">Add Products</a>
       </div>
       <a className="nav-quote" href="/request-quote">Request a Quote</a>
     </nav>
