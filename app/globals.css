@@ -27,6 +27,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -35,6 +36,7 @@ body {
   color: var(--ink);
   font-family: var(--font-montserrat), Arial, sans-serif;
   font-kerning: normal;
+  overflow-x: hidden;
   text-rendering: optimizeLegibility;
 }
 
@@ -6353,6 +6355,7 @@ textarea {
   .catalog-product-card {
     grid-template-columns: 118px minmax(0, 1fr);
   }
+}
 
 
 /* Current public division flow */
@@ -6837,6 +6840,17 @@ textarea {
 }
 
 @media (max-width: 768px) {
+  .public-header-inner {
+    display: flex;
+    justify-content: space-between;
+    min-height: 64px;
+    width: 100%;
+  }
+
+  .public-brand img {
+    width: 124px;
+  }
+
   .hero-actions,
   .division-actions {
     flex-direction: column;
@@ -6855,6 +6869,13 @@ textarea {
     height: 128px;
   }
 
+  .division-hero h1,
+  .division-section-head h2,
+  .division-benefits h2,
+  .division-cta h2 {
+    overflow-wrap: anywhere;
+  }
+
   .footer-column summary {
     cursor: pointer;
   }
@@ -6867,7 +6888,15 @@ textarea {
   }
 
   .division-hero h1 {
-    font-size: 36px;
+    font-size: 31px;
+    line-height: 1.14;
+  }
+
+  .division-section-head h2,
+  .division-benefits h2,
+  .division-cta h2 {
+    font-size: 28px;
+    line-height: 1.16;
   }
 
   .division-hero-visual {
@@ -6881,12 +6910,6 @@ textarea {
 
   .division-product-card img {
     height: 136px;
-  }
-}
-
-  .catalog-product-meta div {
-    grid-template-columns: 1fr;
-    gap: 2px;
   }
 }
 
