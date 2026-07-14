@@ -1,7 +1,8 @@
+import { SlidersHorizontal } from "lucide-react";
 import type { Category } from "@/lib/types/category";
 import type { ProductStatus } from "@/lib/types/product";
 
-export type CatalogSort = "recommended" | "name-asc" | "name-desc" | "recent" | "availability";
+export type CatalogSort = "recommended" | "name-asc" | "name-desc" | "recent";
 
 export function ProductSearchToolbar({
   categories,
@@ -30,6 +31,8 @@ export function ProductSearchToolbar({
   onSortChange: (sort: CatalogSort) => void;
   onOpenFilters: () => void;
 }) {
+  const selectedFilterCount = Number(category !== "All") + Number(status !== "All");
+
   return (
     <section className="catalog-toolbar" aria-label="Product search and filters">
       <label className="catalog-search">
@@ -65,11 +68,11 @@ export function ProductSearchToolbar({
           <option value="name-asc">Product Name A-Z</option>
           <option value="name-desc">Product Name Z-A</option>
           <option value="recent">Recently Added</option>
-          <option value="availability">Availability</option>
         </select>
       </label>
       <button className="catalog-filter-toggle" type="button" onClick={onOpenFilters}>
-        Filters
+        <SlidersHorizontal size={16} aria-hidden="true" />
+        Filters{selectedFilterCount ? ` (${selectedFilterCount})` : ""}
       </button>
       <span className="catalog-count">Showing {count} products</span>
     </section>

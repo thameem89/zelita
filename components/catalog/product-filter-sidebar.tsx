@@ -1,9 +1,26 @@
 import type { Category } from "@/lib/types/category";
 import type { Product, ProductStatus } from "@/lib/types/product";
 
+const categoryNames = [
+  "Cleaning Chemicals",
+  "Janitorial Supplies",
+  "Waste Management",
+  "Industrial Chemicals",
+  "Laundry Supplies",
+  "Dispensers and Tissues",
+  "Food Care Products",
+];
+
+const availabilityOptions: ProductStatus[] = [
+  "Available",
+  "Limited Stock",
+  "Made to Order",
+  "On Request",
+  "Out of Stock",
+];
+
 export function ProductFilterSidebar({
   categories,
-  statuses,
   products,
   activeCategory,
   activeStatus,
@@ -20,61 +37,63 @@ export function ProductFilterSidebar({
   onStatusChange: (status: string) => void;
   onReset: () => void;
 }) {
+  const categoryByName = new Map(categories.map((category) => [category.name, category]));
   const categoryCount = activeCategory === "All" ? 0 : 1;
   const statusCount = activeStatus === "All" ? 0 : 1;
-  const packSizes = Array.from(new Set(products.map((product) => product.packSize).filter(Boolean))).slice(0, 5);
+  const packSizes = Array.from(new Set(products.map((product) => product.packSize).filter(Boolean)));
 
   return (
-    <aside className="catalog-filter-sidebar" aria-label="Advanced product filters">
+    <aside className="catalog-filter-sidebar" aria-label="Product filters">
       <div className="filter-sidebar-head">
-        <div>
-          <strong>Filters</strong>
-          <span>{categoryCount + statusCount} selected</span>
-        </div>
+        <strong>Filters</strong>
         <button type="button" onClick={onReset}>Reset</button>
       </div>
-      <details open>
-        <summary>Product Category {categoryCount ? `(${categoryCount})` : ""}</summary>
-        <div className="filter-options">
-          <label>
-            <input type="radio" checked={activeCategory === "All"} onChange={() => onCategoryChange("All")} />
-            <span>All categories</span>
-          </label>
-          {categories.map((category) => (
-            <label key={category.id}>
-              <input type="radio" checked={activeCategory === category.id} onChange={() => onCategoryChange(category.id)} />
-              <span>{category.name}</span>
+      <fieldset className="filter-fieldset">
+        <legend>Product Category</legend>
+        <label className="filter-checkbox">
+          <input type="checkbox" checked={activeCategory === "All"} onChange={() => onCategoryChange("All")} />
+          <span>All Categories</span>
+        </label>
+        {categoryNames.map((name) => {
+          const category = categoryByName.get(name);
+          const value = category?.id ?? name;
+          return (
+            <label className="filter-checkbox" key={name}>
+              <input type="checkbox" checked={activeCategory === value} onChange={() => onCategoryChange(value)} />
+              <span>{name}</span>
             </label>
-          ))}
-        </div>
-      </details>
-      <details open>
-        <summary>Availability {statusCount ? `(${statusCount})` : ""}</summary>
-        <div className="filter-options">
-          <label>
-            <input type="radio" checked={activeStatus === "All"} onChange={() => onStatusChange("All")} />
-            <span>All availability</span>
+          );
+        })}
+        {categoryCount ? <span className="filter-selected-note">{categoryCount} selected</span> : null}
+      </fieldset>
+      <fieldset className="filter-fieldset">
+        <legend>Availability</legend>
+        <label className="filter-checkbox">
+          <input type="checkbox" checked={activeStatus === "All"} onChange={() => onStatusChange("All")} />
+          <span>All Availability</span>
+        </label>
+        {availabilityOptions.map((status) => (
+          <label className="filter-checkbox" key={status}>
+            <input type="checkbox" checked={activeStatus === status} onChange={() => onStatusChange(status)} />
+            <span>{status}</span>
           </label>
-          {statuses.map((status) => (
-            <label key={status}>
-              <input type="radio" checked={activeStatus === status} onChange={() => onStatusChange(status)} />
-              <span>{status}</span>
-            </label>
-          ))}
-        </div>
-      </details>
-      <details>
+        ))}
+        {statusCount ? <span className="filter-selected-note">{statusCount} selected</span> : null}
+      </fieldset>
+      <details className="filter-details">
         <summary>Commercial / Industrial Use</summary>
-        <div className="filter-options muted-filter-options">
-          <span>Commercial facilities</span>
-          <span>Industrial sites</span>
-          <span>Cleaning contractors</span>
+        <div className="muted-filter-options">
+          <label className="filter-checkbox"><input type="checkbox" disabled /> <span>Commercial facilities</span></label>
+          <label className="filter-checkbox"><input type="checkbox" disabled /> <span>Industrial sites</span></label>
+          <label className="filter-checkbox"><input type="checkbox" disabled /> <span>Cleaning contractors</span></label>
         </div>
       </details>
-      <details>
+      <details className="filter-details">
         <summary>Pack Size</summary>
-        <div className="filter-options muted-filter-options">
-          {packSizes.length ? packSizes.map((pack) => <span key={pack}>{pack}</span>) : <span>Pack sizes vary by product</span>}
+        <div className="muted-filter-options">
+          {packSizes.map((pack) => (
+            <label className="filter-checkbox" key={pack}><input type="checkbox" disabled /> <span>{pack}</span></label>
+          ))}
         </div>
       </details>
     </aside>

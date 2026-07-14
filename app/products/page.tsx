@@ -8,10 +8,9 @@ import { ProductGrid } from "@/components/catalog/product-grid";
 import { ProductHero } from "@/components/catalog/product-hero";
 import { ProductSearchToolbar, type CatalogSort } from "@/components/catalog/product-search-toolbar";
 import { ProcurementSupport } from "@/components/catalog/procurement-support";
-import { SelectedFilterChips } from "@/components/catalog/selected-filter-chips";
 import { ErrorState, LoadingState } from "@/components/ui/state";
 import { getActiveCategories } from "@/lib/services/category-service";
-import { getActiveProducts } from "@/lib/services/product-service";
+import { getPublicDemoProducts } from "@/lib/services/product-service";
 import type { Category } from "@/lib/types/category";
 import type { Product, ProductStatus } from "@/lib/types/product";
 import { SiteFooter } from "../site-footer";
@@ -33,13 +32,21 @@ function ProductsPageContent() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    Promise.all([getActiveProducts(), getActiveCategories()])
+    Promise.all([getPublicDemoProducts(), getActiveCategories()])
       .then(([productData, categoryData]) => {
         setProducts(productData);
         setCategories(categoryData);
       })
       .catch(() => setError("Could not load the product catalog."))
       .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    function closeWithEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setFiltersOpen(false);
+    }
+    window.addEventListener("keydown", closeWithEscape);
+    return () => window.removeEventListener("keydown", closeWithEscape);
   }, []);
 
   useEffect(() => {
@@ -67,7 +74,6 @@ function ProductsPageContent() {
       if (sort === "name-asc") return a.name.localeCompare(b.name);
       if (sort === "name-desc") return b.name.localeCompare(a.name);
       if (sort === "recent") return Date.parse(b.createdAt) - Date.parse(a.createdAt);
-      if (sort === "availability") return a.status.localeCompare(b.status);
       return Number(b.featured) - Number(a.featured) || a.name.localeCompare(b.name);
     });
   }, [activeCategory, activeStatus, products, query, sort]);
@@ -100,17 +106,6 @@ function ProductsPageContent() {
           onOpenFilters={() => setFiltersOpen(true)}
         />
 
-        <SelectedFilterChips
-          categories={categories}
-          query={query}
-          category={activeCategory}
-          status={activeStatus}
-          onQueryClear={() => setQuery("")}
-          onCategoryClear={() => setActiveCategory("All")}
-          onStatusClear={() => setActiveStatus("All")}
-          onClearAll={clearFilters}
-        />
-
         <div className="catalog-layout">
           <ProductFilterSidebar
             categories={categories}
@@ -123,7 +118,7 @@ function ProductsPageContent() {
             onReset={clearFilters}
           />
 
-          <div className="mobile-filter-drawer" aria-hidden={!filtersOpen}>
+          <div className={`mobile-filter-drawer ${filtersOpen ? "open" : ""}`} aria-hidden={!filtersOpen}>
             <button className="mobile-filter-backdrop" type="button" onClick={() => setFiltersOpen(false)} aria-label="Close filters" />
             <div className="mobile-filter-panel" role="dialog" aria-modal="true" aria-label="Product filters">
               <div className="mobile-filter-head">

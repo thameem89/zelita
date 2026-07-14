@@ -13,6 +13,33 @@ export async function getActiveProducts() {
   return (await repository.list()).filter((product) => product.isActive);
 }
 
+export async function getPublicDemoProducts() {
+  const demoSlugs = [
+    "dac-disinfectant",
+    "heavy-duty-degreaser",
+    "outdoor-trash-can-with-wheels",
+    "automatic-soap-dispenser",
+  ];
+  const products = await getActiveProducts();
+  const bySlug = new Map(products.map((product) => [product.slug, product]));
+
+  return demoSlugs.flatMap((slug) => {
+    const product = bySlug.get(slug);
+    if (!product) return [];
+
+    if (slug === "heavy-duty-degreaser") {
+      return [{
+        ...product,
+        packSize: "20L",
+        status: "Available" as const,
+        availability: "Available for commercial replenishment.",
+      }];
+    }
+
+    return [product];
+  });
+}
+
 export async function getProductById(id: string) {
   return repository.getById(id);
 }

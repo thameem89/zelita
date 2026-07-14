@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
+import { Mail, PackageCheck, Phone } from "lucide-react";
 import { QuoteRequestForm } from "@/components/forms/quote-request-form";
 import { StatusBadge } from "@/components/ui/badges";
 import { EmptyState, LoadingState } from "@/components/ui/state";
@@ -93,9 +94,21 @@ export default function ProductDetailPage() {
         </div>
 
         <section className="quote-panel">
-          <div>
+          <div className="quote-panel-copy">
             <p className="eyebrow">Product Quote</p>
-            <h2>Request details for {product.name}.</h2>
+            <h2>Request a commercial quote</h2>
+            <p>Send your requirement and Zelita will prepare availability, pack-size and pricing details for this product.</p>
+            <dl className="quote-product-summary">
+              <div><dt>Product</dt><dd>{product.name}</dd></div>
+              <div><dt>SKU</dt><dd>{product.sku || "On request"}</dd></div>
+              <div><dt>Pack size</dt><dd>{product.packSize}</dd></div>
+              <div><dt>MOQ</dt><dd>{product.minimumOrderQuantity}</dd></div>
+            </dl>
+            <div className="quote-contact-strip" aria-label="Alternative contact options">
+              <span><PackageCheck size={16} aria-hidden="true" /> Procurement support</span>
+              <a href="tel:+966567424517"><Phone size={16} aria-hidden="true" /> Call sales</a>
+              <a href="mailto:info@zelitasa.com"><Mail size={16} aria-hidden="true" /> Email team</a>
+            </div>
           </div>
           <QuoteRequestForm preselectedProductId={product.id} />
         </section>
