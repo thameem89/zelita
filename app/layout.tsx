@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
+import { ScrollAnimations } from "./scroll-animations";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -32,6 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.variable} antialiased`}>
+        <ScrollAnimations />
         {children}
       </body>
     </html>
