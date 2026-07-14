@@ -1710,6 +1710,263 @@ a:focus-visible {
   }
 }
 
+/* Mobile experience polish shared by the public site. */
+@media (max-width: 720px) {
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  body {
+    padding-bottom: 0;
+  }
+
+  body:has(.mobile-bottom-actions) {
+    padding-bottom: 70px;
+  }
+
+  .home-shell {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .public-header-inner {
+    gap: 12px;
+    height: 64px;
+    padding: 0 16px;
+  }
+
+  .public-brand img {
+    width: 126px;
+  }
+
+  .mobile-nav-toggle {
+    border-radius: 8px;
+    height: 44px;
+    width: 44px;
+  }
+
+  .mobile-public-panel {
+    align-content: start;
+    gap: 4px;
+    max-width: none;
+    overflow-y: auto;
+    padding: max(18px, env(safe-area-inset-top)) 20px max(24px, env(safe-area-inset-bottom));
+    width: min(92vw, 380px);
+  }
+
+  .mobile-public-panel > a:not(.button) {
+    min-height: 50px;
+  }
+
+  .mobile-public-panel .language-select {
+    margin-top: 12px;
+    min-height: 48px;
+    width: 100%;
+  }
+
+  .mobile-public-panel .button {
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  .industrial-hero {
+    align-items: flex-end;
+    min-height: min(650px, calc(100svh - 64px));
+  }
+
+  .industrial-hero-image {
+    object-position: 62% center;
+  }
+
+  .industrial-hero-overlay {
+    background: linear-gradient(180deg, rgba(10, 27, 53, 0.2) 0%, rgba(10, 27, 53, 0.78) 42%, rgba(10, 27, 53, 0.98) 100%);
+  }
+
+  .industrial-hero-content {
+    padding-bottom: 42px;
+    padding-top: 110px;
+  }
+
+  .hero-badge {
+    margin-bottom: 16px;
+  }
+
+  .industrial-hero h1 {
+    font-size: clamp(35px, 10.5vw, 44px);
+    line-height: 1.04;
+    margin-bottom: 16px;
+  }
+
+  .industrial-hero-content > p:not(.hero-badge) {
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 24px;
+  }
+
+  .industrial-hero .hero-actions {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+    margin-top: 0;
+  }
+
+  .industrial-hero .button,
+  .home-contact .button {
+    min-height: 50px;
+    width: 100%;
+  }
+
+  .capability-grid {
+    gap: 0;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+
+  .capability-grid article,
+  .capability-grid article:first-child {
+    padding: 15px 0;
+  }
+
+  .category-showcase,
+  .company-section,
+  .services-showcase {
+    padding: 52px 0;
+  }
+
+  .centered-heading {
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .centered-heading h2,
+  .company-copy h2,
+  .home-contact h2 {
+    font-size: clamp(30px, 9vw, 38px);
+    line-height: 1.08;
+  }
+
+  .category-showcase-grid,
+  .service-showcase-grid {
+    gap: 14px;
+  }
+
+  .showcase-card {
+    min-height: 0;
+    padding: 12px 12px 18px;
+  }
+
+  .showcase-card img {
+    height: auto;
+    aspect-ratio: 1.65;
+  }
+
+  .showcase-card h3 {
+    margin-top: 15px;
+  }
+
+  .showcase-card span {
+    margin-top: 5px;
+  }
+
+  .company-grid {
+    gap: 28px;
+  }
+
+  .company-image {
+    aspect-ratio: 1.35;
+  }
+
+  .company-copy > p:not(.eyebrow) {
+    text-align: left;
+  }
+
+  .company-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .company-copy .button {
+    width: 100%;
+  }
+
+  .service-showcase-card img {
+    aspect-ratio: 1.75;
+  }
+
+  .service-showcase-card div {
+    padding: 20px;
+  }
+
+  .service-showcase-card p {
+    min-height: 0;
+  }
+
+  .services-action {
+    margin-top: 24px;
+  }
+
+  .services-action .button {
+    width: 100%;
+  }
+
+  .home-contact {
+    padding: 48px 0;
+  }
+
+  .contact-inner {
+    gap: 24px;
+  }
+
+  .minimal-footer-main {
+    gap: 22px;
+    padding-bottom: 28px;
+    padding-top: 28px;
+  }
+
+  .minimal-footer-brand {
+    gap: 12px;
+  }
+
+  .minimal-footer-links,
+  .minimal-footer-contact {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .minimal-footer-links a,
+  .minimal-footer-contact a {
+    align-items: center;
+    display: inline-flex;
+    min-height: 40px;
+  }
+
+  .minimal-footer-bottom {
+    gap: 8px;
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .industrial-hero h1 {
+    font-size: 33px;
+  }
+
+  .company-facts,
+  .minimal-footer-links,
+  .minimal-footer-contact {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 980px) {
   .home-nav .nav-links {
     display: flex;
@@ -6079,5 +6336,39 @@ textarea {
   .catalog-product-meta div {
     grid-template-columns: 1fr;
     gap: 2px;
+  }
+}
+
+/* Keep the phone-specific homepage treatment last in the cascade. */
+@media (max-width: 720px) {
+  body {
+    padding-bottom: 0;
+  }
+
+  body:has(.mobile-bottom-actions) {
+    padding-bottom: 70px;
+  }
+
+  .industrial-hero {
+    align-items: flex-end;
+    min-height: min(650px, calc(100svh - 64px));
+  }
+
+  .industrial-hero-overlay {
+    background: linear-gradient(180deg, rgba(10, 27, 53, 0.2) 0%, rgba(10, 27, 53, 0.78) 42%, rgba(10, 27, 53, 0.98) 100%);
+  }
+
+  .industrial-hero h1 {
+    font-size: clamp(35px, 10.5vw, 44px);
+  }
+
+  .public-header-inner {
+    height: 64px;
+  }
+}
+
+@media (max-width: 380px) {
+  .industrial-hero h1 {
+    font-size: 33px;
   }
 }

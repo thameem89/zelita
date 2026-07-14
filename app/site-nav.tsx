@@ -30,6 +30,13 @@ export function SiteNav({ tone = "default" }: SiteNavProps) {
     return () => window.removeEventListener("keydown", closeWithEscape);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <header className={className}>
       <nav className="public-header-inner" aria-label="Main navigation">
@@ -48,14 +55,21 @@ export function SiteNav({ tone = "default" }: SiteNavProps) {
         </div>
         <div className="public-header-actions">
           <a className="nav-quote" href="/request-quote">Request a Quote</a>
-          <button className="mobile-nav-toggle" type="button" onClick={() => setOpen(true)} aria-label="Open navigation">
+          <button
+            className="mobile-nav-toggle"
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Open navigation"
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
+          >
             <Menu size={22} aria-hidden="true" />
           </button>
         </div>
       </nav>
       <div className={`mobile-public-nav ${open ? "open" : ""}`} aria-hidden={!open}>
         <button className="mobile-public-backdrop" type="button" onClick={() => setOpen(false)} aria-label="Close navigation" />
-        <div className="mobile-public-panel" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+        <div className="mobile-public-panel" id="mobile-navigation" role="dialog" aria-modal="true" aria-label="Mobile navigation">
           <div className="mobile-public-head">
             <img src="/zelita-logo.png" alt="Zelita Ventures Co. LLC" />
             <button type="button" onClick={() => setOpen(false)} aria-label="Close navigation">
