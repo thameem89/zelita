@@ -1,11 +1,21 @@
 import { SiteFooter } from "./site-footer";
 import { SiteNav } from "./site-nav";
 
-const productCategories = [
-  { name: "Cleaning Chemicals", image: "/zelita-supplies-set.png" },
-  { name: "Waste Management", image: "/zelita-waste-bins.png" },
-  { name: "Janitorial Products", image: "/zelita-janitorial-cart.png" },
-  { name: "Aerosol Products", image: "/zelita-aerosol-products.png" },
+const divisions = [
+  {
+    title: "Cleaning Chemicals",
+    copy: "Commercial and industrial chemical solutions for daily cleaning, disinfection, floor care, kitchens and specialised applications.",
+    button: "Explore Cleaning Chemicals",
+    href: "/cleaning-chemicals",
+    image: "/zelita-cleaning-products.png",
+  },
+  {
+    title: "Cleaning Equipment",
+    copy: "Professional equipment and facility-care essentials for washrooms, waste handling, janitorial work and floor maintenance.",
+    button: "Explore Cleaning Equipment",
+    href: "/cleaning-equipment",
+    image: "/zelita-janitorial-cart.png",
+  },
 ];
 
 const services = [
@@ -45,7 +55,8 @@ export default function Home() {
             solutions for businesses across Saudi Arabia.
           </p>
           <div className="hero-actions">
-            <a className="button primary" href="/products">Explore Products</a>
+            <a className="button primary" href="/cleaning-chemicals">Cleaning Chemicals</a>
+            <a className="button secondary" href="/cleaning-equipment">Cleaning Equipment</a>
             <a className="button secondary" href="/request-quote">Request a Quote</a>
           </div>
         </div>
@@ -72,18 +83,21 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="category-showcase" id="products">
+      <section className="division-showcase" id="divisions">
         <div className="home-shell">
           <div className="centered-heading">
-            <p className="eyebrow">Our Product Categories</p>
-            <h2>Everything your business needs.</h2>
+            <p className="eyebrow">Product Divisions</p>
+            <h2>Focused supply paths for commercial buyers.</h2>
           </div>
-          <div className="category-showcase-grid">
-            {productCategories.map((category) => (
-              <a className="showcase-card" href="/products" key={category.name}>
-                <img src={category.image} alt="" />
-                <h3>{category.name}</h3>
-                <span>View products</span>
+          <div className="division-showcase-grid">
+            {divisions.map((division) => (
+              <a className="division-panel" href={division.href} key={division.title}>
+                <img src={division.image} alt="" />
+                <div>
+                  <h3>{division.title}</h3>
+                  <p>{division.copy}</p>
+                  <span>{division.button}</span>
+                </div>
               </a>
             ))}
           </div>

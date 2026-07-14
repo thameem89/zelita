@@ -12,6 +12,7 @@ type FormState = {
   email: string;
   phone: string;
   city: string;
+  division: string;
   productId: string;
   quantity: string;
   message: string;
@@ -24,15 +25,30 @@ const initialState: FormState = {
   email: "",
   phone: "",
   city: "",
+  division: "",
   productId: "",
   quantity: "",
   message: "",
   website: "",
 };
 
-export function QuoteRequestForm({ preselectedProductId = "" }: { preselectedProductId?: string }) {
+type QuoteRequestFormProps = {
+  preselectedDivision?: string;
+  preselectedProductId?: string;
+  preselectedProductName?: string;
+};
+
+export function QuoteRequestForm({
+  preselectedDivision = "",
+  preselectedProductId = "",
+  preselectedProductName = "",
+}: QuoteRequestFormProps) {
   const [products, setProducts] = useState<Product[]>([]);
-  const [form, setForm] = useState<FormState>({ ...initialState, productId: preselectedProductId });
+  const [form, setForm] = useState<FormState>({
+    ...initialState,
+    division: preselectedDivision,
+    productId: preselectedProductId,
+  });
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [success, setSuccess] = useState("");
 
@@ -41,8 +57,12 @@ export function QuoteRequestForm({ preselectedProductId = "" }: { preselectedPro
   }, []);
 
   useEffect(() => {
-    setForm((current) => ({ ...current, productId: preselectedProductId || current.productId }));
-  }, [preselectedProductId]);
+    setForm((current) => ({
+      ...current,
+      division: preselectedDivision || current.division,
+      productId: preselectedProductId || current.productId,
+    }));
+  }, [preselectedDivision, preselectedProductId]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -58,18 +78,24 @@ export function QuoteRequestForm({ preselectedProductId = "" }: { preselectedPro
     if (Object.keys(nextErrors).length) return;
 
     const product = products.find((item) => item.id === form.productId);
+    const productName = product?.name ?? preselectedProductName;
+    const context = [
+      form.division ? `Division: ${form.division}` : "",
+      productName ? `Requested product: ${productName}` : "",
+      form.message,
+    ].filter(Boolean).join("\n\n");
     const result = await createEnquiry({
-      enquiryType: product ? "Product" : "Quote",
+      enquiryType: product || productName ? "Product" : "Quote",
       customerName: form.customerName,
       companyName: form.companyName,
       email: form.email,
       phone: form.phone,
       city: form.city,
       productId: product?.id ?? "",
-      productName: product?.name ?? "",
+      productName,
       quantity: form.quantity,
-      subject: product ? `Quote request for ${product.name}` : "Quote request",
-      message: form.message,
+      subject: productName ? `Quote request for ${productName}` : "Quote request",
+      message: context,
     });
 
     if (!result.ok) {
@@ -78,7 +104,7 @@ export function QuoteRequestForm({ preselectedProductId = "" }: { preselectedPro
     }
 
     setSuccess("Thank you. Your quote request has been saved for the Zelita team.");
-    setForm({ ...initialState, productId: preselectedProductId });
+    setForm({ ...initialState, division: preselectedDivision, productId: preselectedProductId });
     setErrors({});
   }
 
@@ -112,9 +138,22 @@ export function QuoteRequestForm({ preselectedProductId = "" }: { preselectedPro
           <input value={form.city} onChange={(event) => setForm({ ...form, city: event.target.value })} />
         </label>
         <label>
+          Division
+          <select value={form.division} onChange={(event) => setForm({ ...form, division: event.target.value })}>
+            <option value="">General requirement</option>
+            <option value="cleaning-chemicals">Cleaning Chemicals</option>
+            <option value="cleaning-equipment">Cleaning Equipment</option>
+          </select>
+        </label>
+      </div>
+      <div className="form-grid">
+        <label>
           Product
           <select value={form.productId} onChange={(event) => setForm({ ...form, productId: event.target.value })}>
             <option value="">General quote</option>
+            {preselectedProductId && preselectedProductName ? (
+              <option value={preselectedProductId}>{preselectedProductName}</option>
+            ) : null}
             {products.map((product) => (
               <option key={product.id} value={product.id}>
                 {product.name}

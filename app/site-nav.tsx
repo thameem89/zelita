@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 type SiteNavProps = {
@@ -11,9 +11,9 @@ type SiteNavProps = {
 const links = [
   ["Home", "/"],
   ["About", "/about"],
-  ["Products", "/products"],
+  ["Cleaning Chemicals", "/cleaning-chemicals"],
+  ["Cleaning Equipment", "/cleaning-equipment"],
   ["Services", "/services"],
-  ["Industrial Solutions", "/services"],
   ["Contact", "/contact"],
 ];
 
@@ -54,6 +54,12 @@ export function SiteNav({ tone = "default" }: SiteNavProps) {
           })}
         </div>
         <div className="public-header-actions">
+          <label className="language-select-wrap" aria-label="Language selector">
+            <select className="language-select" defaultValue="en">
+              <option value="en">EN</option>
+            </select>
+            <ChevronDown size={14} aria-hidden="true" />
+          </label>
           <a className="nav-quote" href="/request-quote">Request a Quote</a>
           <button
             className="mobile-nav-toggle"
@@ -84,6 +90,12 @@ export function SiteNav({ tone = "default" }: SiteNavProps) {
               </a>
             );
           })}
+          <label className="language-select-wrap mobile-language" aria-label="Language selector">
+            <select className="language-select" defaultValue="en">
+              <option value="en">EN</option>
+            </select>
+            <ChevronDown size={14} aria-hidden="true" />
+          </label>
           <a className="button primary" href="/request-quote" onClick={() => setOpen(false)}>Request a Quote</a>
         </div>
       </div>

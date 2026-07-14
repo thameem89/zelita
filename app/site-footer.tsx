@@ -12,19 +12,16 @@ const footerGroups = [
     ],
   },
   {
-    title: "Products",
+    title: "Divisions",
     links: [
-      ["Product Catalog", "/products"],
-      ["Cleaning Chemicals", "/products?category=cat-cleaning-chemicals"],
-      ["Industrial Chemicals", "/products?category=cat-industrial-chemicals"],
-      ["Waste Management", "/products?category=cat-waste-management"],
+      ["Cleaning Chemicals", "/cleaning-chemicals"],
+      ["Cleaning Equipment", "/cleaning-equipment"],
     ],
   },
   {
     title: "Services",
     links: [
       ["Cleaning Services", "/services"],
-      ["Industrial Solutions", "/services"],
       ["Procurement Support", "/request-quote"],
     ],
   },

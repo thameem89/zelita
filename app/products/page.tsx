@@ -18,6 +18,8 @@ import { SiteNav } from "../site-nav";
 
 const statuses: ProductStatus[] = ["Available", "Limited Stock", "Made to Order", "On Request", "Out of Stock"];
 
+// Inactive public flow: the general catalogue is intentionally kept isolated for
+// future use, but it is no longer linked from the public homepage, header, or footer.
 function ProductsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
