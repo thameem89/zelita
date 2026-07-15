@@ -9,6 +9,20 @@ export async function getProducts() {
   return repository.list();
 }
 
+export async function getChemicalProducts() {
+  return (await repository.list()).filter((product) => {
+    if (product.productType) return product.productType === "chemical";
+    return product.categoryName.toLowerCase().includes("chemical");
+  });
+}
+
+export async function getEquipmentProducts() {
+  return (await repository.list()).filter((product) => {
+    if (product.productType) return product.productType === "equipment";
+    return !product.categoryName.toLowerCase().includes("chemical");
+  });
+}
+
 export async function getActiveProducts() {
   return (await repository.list()).filter((product) => product.isActive);
 }

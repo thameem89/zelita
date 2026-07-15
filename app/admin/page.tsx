@@ -3,44 +3,52 @@
 import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/components/ui/badges";
 import { LoadingState } from "@/components/ui/state";
-import { getCategories } from "@/lib/services/category-service";
 import { getEnquiries } from "@/lib/services/enquiry-service";
 import { getProducts } from "@/lib/services/product-service";
 import { formatDate } from "@/lib/services/utils";
-import type { Category } from "@/lib/types/category";
 import type { Enquiry } from "@/lib/types/enquiry";
-import type { Product } from "@/lib/types/product";
+import type { Product, ProductDivision } from "@/lib/types/product";
+
+function inferProductType(product: Product): ProductDivision {
+  return product.productType ?? (product.categoryName.toLowerCase().includes("chemical") ? "chemical" : "equipment");
+}
+
+function adminEditHref(product: Product) {
+  return inferProductType(product) === "equipment"
+    ? `/admin/cleaning-equipment/${product.id}/edit`
+    : `/admin/cleaning-chemicals/${product.id}/edit`;
+}
 
 export default function AdminDashboardPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([getProducts(), getCategories(), getEnquiries()])
-      .then(([productData, categoryData, enquiryData]) => {
+    Promise.all([getProducts(), getEnquiries()])
+      .then(([productData, enquiryData]) => {
         setProducts(productData);
-        setCategories(categoryData);
         setEnquiries(enquiryData);
       })
       .finally(() => setLoading(false));
   }, []);
 
-  const statusCounts = useMemo(() => {
-    return products.reduce<Record<string, number>>((acc, product) => {
-      acc[product.status] = (acc[product.status] ?? 0) + 1;
+  const divisionCounts = useMemo(() => {
+    return products.reduce<Record<ProductDivision, number>>((acc, product) => {
+      const type = inferProductType(product);
+      acc[type] = (acc[type] ?? 0) + 1;
       return acc;
-    }, {});
+    }, { chemical: 0, equipment: 0 });
   }, [products]);
 
   if (loading) return <LoadingState label="Loading dashboard..." />;
 
   const cards = [
-    ["Total Products", products.length],
+    ["Total Chemical Products", divisionCounts.chemical],
+    ["Total Equipment Products", divisionCounts.equipment],
     ["Active Products", products.filter((product) => product.isActive).length],
-    ["Product Categories", categories.length],
     ["New Enquiries", enquiries.filter((enquiry) => enquiry.status === "New").length],
+    ["Products with PDFs", products.filter((product) => product.documents?.length || product.safetySheetUrl).length],
     ["Featured Products", products.filter((product) => product.featured).length],
   ];
 
@@ -48,7 +56,7 @@ export default function AdminDashboardPage() {
     <main className="admin-page">
       <div className="admin-title">
         <p className="eyebrow">Dashboard</p>
-        <h1>Zelita mock backend overview</h1>
+        <h1>Zelita product division overview</h1>
       </div>
       <section className="admin-card-grid">
         {cards.map(([label, value]) => (
@@ -69,10 +77,10 @@ export default function AdminDashboardPage() {
           ))}
         </article>
         <article className="admin-panel">
-          <div className="panel-head"><h2>Recently updated products</h2><a href="/admin/products">View all</a></div>
+          <div className="panel-head"><h2>Recently updated products</h2><a href="/admin/cleaning-chemicals">View chemicals</a></div>
           {[...products].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)).slice(0, 5).map((product) => (
-            <a className="admin-list-row" href={`/admin/products/${product.id}/edit`} key={product.id}>
-              <div><strong>{product.name}</strong><small>{product.categoryName} • {formatDate(product.updatedAt)}</small></div>
+            <a className="admin-list-row" href={adminEditHref(product)} key={product.id}>
+              <div><strong>{product.name}</strong><small>{product.categoryName} - {formatDate(product.updatedAt)}</small></div>
               <StatusBadge status={product.status} />
             </a>
           ))}
@@ -80,20 +88,20 @@ export default function AdminDashboardPage() {
       </section>
       <section className="admin-two-col">
         <article className="admin-panel">
-          <h2>Product status overview</h2>
+          <h2>Product division overview</h2>
           <div className="status-overview">
-            {Object.entries(statusCounts).map(([status, count]) => (
-              <span key={status}>{status}: <strong>{count}</strong></span>
-            ))}
+            <span>Cleaning Chemicals: <strong>{divisionCounts.chemical}</strong></span>
+            <span>Cleaning Equipment: <strong>{divisionCounts.equipment}</strong></span>
+            <span>Active items: <strong>{products.filter((product) => product.isActive).length}</strong></span>
           </div>
         </article>
         <article className="admin-panel">
           <h2>Quick actions</h2>
           <div className="quick-actions">
-            <a className="button primary" href="/admin/products/new">Add Product</a>
-            <a className="button dark" href="/admin/categories">Add Category</a>
+            <a className="button primary" href="/admin/cleaning-chemicals/new">Add Chemical Product</a>
+            <a className="button dark" href="/admin/cleaning-equipment/new">Add Equipment Product</a>
             <a className="button dark" href="/admin/enquiries">View Enquiries</a>
-            <a className="button dark" href="/products" target="_blank">View Public Catalog</a>
+            <a className="button dark" href="/cleaning-chemicals" target="_blank">View Chemicals Page</a>
           </div>
         </article>
       </section>

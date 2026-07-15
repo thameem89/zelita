@@ -7,31 +7,31 @@ import type { MockSession } from "@/lib/types/admin";
 import { LoadingState } from "../ui/state";
 
 const navItems = [
-  ["▦", "Dashboard", "/admin"],
-  ["◈", "Products", "/admin/products"],
-  ["◇", "Categories", "/admin/categories"],
-  ["✉", "Enquiries", "/admin/enquiries"],
-  ["⚙", "Settings", "/admin/settings"],
+  ["D", "Dashboard", "/admin"],
+  ["C", "Cleaning Chemicals", "/admin/cleaning-chemicals"],
+  ["E", "Cleaning Equipment", "/admin/cleaning-equipment"],
+  ["Q", "Enquiries", "/admin/enquiries"],
+  ["S", "Settings", "/admin/settings"],
 ];
 
 const pageMeta = [
   {
     match: (pathname: string) => pathname === "/admin",
     title: "Dashboard",
-    description: "Monitor Zelita catalog activity and customer enquiries.",
+    description: "Monitor Zelita products and customer enquiries.",
     action: null,
   },
   {
-    match: (pathname: string) => pathname.startsWith("/admin/products"),
-    title: "Products",
-    description: "Manage Zelita’s product catalog and availability.",
-    action: { label: "Add Product", href: "/admin/products/new" },
+    match: (pathname: string) => pathname.startsWith("/admin/cleaning-chemicals"),
+    title: "Cleaning Chemicals",
+    description: "Manage chemical products, ZELOX ranges, detail pages and PDF documents.",
+    action: { label: "Add Chemical Product", href: "/admin/cleaning-chemicals/new" },
   },
   {
-    match: (pathname: string) => pathname.startsWith("/admin/categories"),
-    title: "Categories",
-    description: "Organize product families and catalog visibility.",
-    action: null,
+    match: (pathname: string) => pathname.startsWith("/admin/cleaning-equipment"),
+    title: "Cleaning Equipment",
+    description: "Manage simple equipment quotation cards and display order.",
+    action: { label: "Add Equipment Product", href: "/admin/cleaning-equipment/new" },
   },
   {
     match: (pathname: string) => pathname.startsWith("/admin/enquiries"),
@@ -111,14 +111,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <div className="admin-sidebar-footer">
           <span className="demo-badge">Demo Admin</span>
           <a href="/" target="_blank" rel="noreferrer"><span aria-hidden="true">↗</span> View Website</a>
-          <button type="button" onClick={logout}><span aria-hidden="true">⎋</span> Logout</button>
+          <button type="button" onClick={logout}><span aria-hidden="true">×</span> Logout</button>
         </div>
       </aside>
       <div className="admin-main">
         <header className="admin-header">
           <div className="admin-header-title">
             <button className="admin-menu" type="button" onClick={() => setOpen(!open)} aria-expanded={open}>
-              ☰
+              Menu
             </button>
             <div>
               <h1>{meta.title}</h1>
@@ -127,7 +127,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </div>
           <div className="admin-header-actions">
             {meta.action ? <a className="button primary admin-primary-action" href={meta.action.href}>{meta.action.label}</a> : null}
-            <button className="admin-notification" type="button" aria-label="Notifications">◔</button>
+            <button className="admin-notification" type="button" aria-label="Notifications">•</button>
             <div className="admin-user">
               <strong>{session?.admin.name ?? "Zelita Admin"}</strong>
               <span>{session?.admin.email ?? "admin@zelita-demo.com"}</span>

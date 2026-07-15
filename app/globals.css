@@ -4168,6 +4168,101 @@ textarea {
   color: var(--red);
 }
 
+.admin-list-toolbar {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding: 24px;
+}
+
+.admin-list-toolbar h2 {
+  color: #111827;
+  font-size: 1.45rem;
+  margin: 0 0 6px;
+}
+
+.admin-list-toolbar p {
+  color: #64748b;
+  margin: 0;
+}
+
+.division-admin-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.division-admin-card {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 132px minmax(0, 1fr);
+  padding: 18px;
+}
+
+.division-admin-card img {
+  aspect-ratio: 1;
+  background: #f8fafc;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  object-fit: contain;
+  padding: 12px;
+  width: 100%;
+}
+
+.division-admin-card small {
+  color: var(--admin-accent);
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.division-admin-card h3 {
+  color: #111827;
+  font-size: 1.05rem;
+  margin: 0 0 8px;
+}
+
+.division-admin-card p {
+  color: #64748b;
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+
+.division-admin-card dl {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 0 14px;
+}
+
+.division-admin-card dt {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.division-admin-card dd {
+  color: #334155;
+  font-weight: 700;
+  margin: 4px 0 0;
+}
+
 .product-admin-cards {
   display: none;
 }
@@ -4378,6 +4473,19 @@ textarea {
 }
 
 @media (max-width: 760px) {
+  .admin-list-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .division-admin-card {
+    grid-template-columns: 96px minmax(0, 1fr);
+  }
+
+  .division-admin-card dl {
+    grid-template-columns: 1fr;
+  }
+
   .admin-sidebar {
     bottom: 0;
     display: flex;
@@ -4428,6 +4536,16 @@ textarea {
   .product-form-action-bar .button,
   .product-form-action-bar .admin-secondary-button {
     width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .division-admin-card {
+    grid-template-columns: 1fr;
+  }
+
+  .division-admin-card img {
+    max-width: 180px;
   }
 }
 
