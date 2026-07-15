@@ -33,6 +33,10 @@ export type FeaturedDivisionProduct = {
   description: string;
   image: string;
   quoteHref: string;
+  detailHref?: string;
+  rangeName?: string;
+  safetyLevel?: "Caution" | "Warning" | "Danger";
+  hasSds?: boolean;
 };
 
 export type DivisionHeroProps = {
@@ -137,7 +141,12 @@ export function FeaturedProductShowcase({
             <article className="division-product-card" key={product.name}>
               <img src={product.image} alt={`${product.name} by Zelita`} />
               <div>
-                <span>{product.category}</span>
+                <div className="division-product-badges">
+                  {product.rangeName ? <span>{product.rangeName}</span> : null}
+                  {product.safetyLevel ? <span className="safety-badge danger">{product.safetyLevel}</span> : null}
+                  {product.hasSds ? <span className="sds-badge">SDS Available</span> : null}
+                </div>
+                <small>{product.category}</small>
                 <h3>{product.name}</h3>
                 <dl>
                   <div>
@@ -146,7 +155,10 @@ export function FeaturedProductShowcase({
                   </div>
                 </dl>
                 <p>{product.description}</p>
-                <a href={product.quoteHref}>Request Quote</a>
+                <div className="division-product-actions">
+                  {product.detailHref ? <a href={product.detailHref}>View Product</a> : null}
+                  <a href={product.quoteHref}>Request Quote</a>
+                </div>
               </div>
             </article>
           ))}

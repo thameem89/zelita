@@ -21,8 +21,12 @@ const revealGroups = [
   },
   {
     selector:
-      ".centered-heading, .division-section-head, .section-head, .story-grid > div, .contact-card, .quote-panel",
+      ".centered-heading, .division-section-head, .section-head, .story-grid > div, .contact-card, .quote-panel, .chemical-detail-copy, .chemical-detail-info-grid article",
     variant: "up",
+  },
+  {
+    selector: ".chemical-detail-image",
+    variant: "scale",
   },
 ];
 
@@ -37,6 +41,7 @@ const staggerParents = [
   ".division-product-grid",
   ".division-application-grid",
   ".division-benefit-list",
+  ".chemical-detail-info-grid",
   ".public-footer-main",
 ];
 

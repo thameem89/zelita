@@ -15,6 +15,7 @@ const demoProductNames: Record<string, string> = {
   "automatic-soap-dispenser": "Automatic Soap Dispenser",
   "janitorial-cleaning-trolley": "Janitorial Cleaning Trolley",
   "commercial-wet-and-dry-vacuum": "Commercial Wet and Dry Vacuum",
+  "zelox-ultra-pro-premium-acidic-toilet-urinal-cleaner": "ZELOX Ultra Pro Premium Acidic Toilet & Urinal Cleaner",
 };
 
 function RequestQuotePageContent() {
