@@ -70,6 +70,7 @@ function blankInput(type: ProductDivision): ProductInput {
     gallery: [],
     brochureUrl: "",
     safetySheetUrl: "",
+    pdfUrl: "",
     zeloxRange: isChemical ? "Ultra Pro" : undefined,
     rangeLabel: isChemical ? "Professional Premium Maintenance Tier" : undefined,
     keyAdvantages: [],
