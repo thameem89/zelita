@@ -87,6 +87,7 @@ export default function ProductDetailPage() {
               <a className="button dark" href={`https://wa.me/966567424517?text=${encodeURIComponent(`Hello Zelita, I want to enquire about ${product.name}.`)}`} target="_blank" rel="noreferrer">WhatsApp Enquiry</a>
             </div>
             <div className="document-links">
+              {product.pdfUrl ? <a className="button dark" href={product.pdfUrl} target="_blank" rel="noreferrer" aria-label={`View datasheet for ${product.name}`}>View Datasheet</a> : null}
               {product.brochureUrl ? <a href={product.brochureUrl}>Download brochure</a> : null}
               {product.safetySheetUrl ? <a href={product.safetySheetUrl}>Safety sheet</a> : null}
             </div>

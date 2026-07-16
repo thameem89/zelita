@@ -39,6 +39,7 @@ export type Product = {
   gallery: string[];
   brochureUrl: string;
   safetySheetUrl: string;
+  pdfUrl: string;
   zeloxRange?: ZeloxRange;
   rangeLabel?: string;
   keyAdvantages?: string[];
@@ -53,6 +54,11 @@ export type Product = {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+};
+
+export type ProductSaveInput = ProductInput & {
+  pdfFile?: File | null;
+  removePdf?: boolean;
 };
 
 export type ProductInput = Omit<Product, "id" | "createdAt" | "updatedAt">;

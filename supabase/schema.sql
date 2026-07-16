@@ -30,11 +30,22 @@ create table if not exists public.products (
   gallery text[] default '{}',
   brochure_url text,
   safety_sheet_url text,
+  pdf_url text,
   featured boolean default false,
   is_active boolean default true,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+
+-- Safe to run against an existing installation.
+alter table public.products add column if not exists pdf_url text;
+create unique index if not exists products_slug_unique_idx on public.products (slug);
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('product-pdfs', 'product-pdfs', true, 10485760, array['application/pdf'])
+on conflict (id) do update set
+  file_size_limit = excluded.file_size_limit,
+  allowed_mime_types = excluded.allowed_mime_types;
 
 create table if not exists public.enquiries (
   id text primary key,

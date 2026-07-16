@@ -74,6 +74,7 @@ export const supabaseProductRepository: ProductRepository = {
         gallery: input.gallery,
         brochure_url: input.brochureUrl,
         safety_sheet_url: input.safetySheetUrl,
+        pdf_url: input.pdfUrl,
         featured: input.featured,
         is_active: input.isActive,
         updated_at: now(),

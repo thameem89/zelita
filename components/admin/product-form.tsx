@@ -6,7 +6,7 @@ import { getCategories } from "@/lib/services/category-service";
 import { createProduct, updateProduct } from "@/lib/services/product-service";
 import { slugify } from "@/lib/services/utils";
 import type { Category } from "@/lib/types/category";
-import type { Product, ProductInput, ProductStatus } from "@/lib/types/product";
+import type { Product, ProductInput, ProductSaveInput, ProductStatus } from "@/lib/types/product";
 import { FormFieldError } from "../ui/form-field-error";
 
 const statuses: ProductStatus[] = ["Available", "Limited Stock", "Made to Order", "On Request", "Out of Stock"];
@@ -28,6 +28,7 @@ function blankProduct(category?: Category): ProductInput {
     gallery: [],
     brochureUrl: "",
     safetySheetUrl: "",
+    pdfUrl: "",
     featured: false,
     isActive: true,
   };
@@ -40,6 +41,10 @@ export function ProductForm({ product }: { product?: Product }) {
   const [galleryText, setGalleryText] = useState(product?.gallery.join("\n") ?? "");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState("");
+  const [slugEdited, setSlugEdited] = useState(Boolean(product));
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [removePdf, setRemovePdf] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     getCategories().then((items) => {
@@ -52,18 +57,20 @@ export function ProductForm({ product }: { product?: Product }) {
     setForm((current) => ({
       ...current,
       name,
-      slug: current.slug ? current.slug : slugify(name),
+      slug: slugEdited ? current.slug : slugify(name),
     }));
   }
 
   async function saveProduct(overrideActive?: boolean) {
     setSuccess("");
     const category = categories.find((item) => item.id === form.categoryId);
-    const input: ProductInput = {
+    const input: ProductSaveInput = {
       ...form,
       isActive: typeof overrideActive === "boolean" ? overrideActive : form.isActive,
       categoryName: category?.name ?? form.categoryName,
       gallery: galleryText.split("\n").map((item) => item.trim()).filter(Boolean),
+      pdfFile,
+      removePdf,
     };
     const localErrors: Record<string, string> = {};
     if (!input.name.trim()) localErrors.name = "Product name is required.";
@@ -74,7 +81,9 @@ export function ProductForm({ product }: { product?: Product }) {
     setErrors(localErrors);
     if (Object.keys(localErrors).length) return;
 
+    setSaving(true);
     const result = product ? await updateProduct(product.id, input) : await createProduct(input);
+    setSaving(false);
     if (!result.ok) {
       setErrors({ form: result.error });
       return;
@@ -99,7 +108,7 @@ export function ProductForm({ product }: { product?: Product }) {
         </div>
         <div className="form-grid">
           <label>Product name<input value={form.name} onChange={(event) => setName(event.target.value)} /><FormFieldError message={errors.name} /></label>
-          <label>Slug<input value={form.slug} onChange={(event) => setForm({ ...form, slug: slugify(event.target.value) })} /><FormFieldError message={errors.slug} /></label>
+          <label>Slug<input value={form.slug} onChange={(event) => { setSlugEdited(true); setForm({ ...form, slug: slugify(event.target.value) }); }} aria-describedby="slug-help" /><small id="slug-help">Used at /products/{form.slug || "product-slug"}</small><FormFieldError message={errors.slug} /></label>
         </div>
         <div className="form-grid">
           <label>SKU<input value={form.sku} onChange={(event) => setForm({ ...form, sku: event.target.value })} /></label>
@@ -107,6 +116,13 @@ export function ProductForm({ product }: { product?: Product }) {
             const category = categories.find((item) => item.id === event.target.value);
             setForm({ ...form, categoryId: event.target.value, categoryName: category?.name ?? "" });
           }}>{categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}</select><FormFieldError message={errors.categoryId} /></label>
+        </div>
+        <div className="pdf-upload-field">
+          <label>Product PDF / Datasheet<input type="file" accept="application/pdf,.pdf" onChange={(event) => { setPdfFile(event.target.files?.[0] ?? null); setRemovePdf(false); }} /></label>
+          {pdfFile ? <p className="storage-note">Selected: {pdfFile.name}</p> : null}
+          {form.pdfUrl && !removePdf ? <p><a href={form.pdfUrl} target="_blank" rel="noreferrer">View current PDF</a> <button className="admin-secondary-button" type="button" onClick={() => { setRemovePdf(true); setPdfFile(null); }}>Remove PDF</button></p> : null}
+          {removePdf ? <p className="storage-note">The current PDF will be removed when you save.</p> : null}
+          <FormFieldError message={errors.pdfFile} />
         </div>
         <label>Short description<input value={form.shortDescription} onChange={(event) => setForm({ ...form, shortDescription: event.target.value })} /><FormFieldError message={errors.shortDescription} /></label>
         <label>Full description<textarea rows={5} value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} /></label>
@@ -155,8 +171,8 @@ export function ProductForm({ product }: { product?: Product }) {
 
       <div className="product-form-action-bar">
         <a className="button dark" href="/admin/products">Cancel</a>
-        <button className="admin-secondary-button" type="button" onClick={() => saveProduct(false)}>Save as Inactive</button>
-        <button className="button primary" type="submit">Save Product</button>
+        <button className="admin-secondary-button" type="button" disabled={saving} onClick={() => saveProduct(false)}>Save as Inactive</button>
+        <button className="button primary" type="submit" disabled={saving}>{saving ? "Saving…" : "Save Product"}</button>
       </div>
     </form>
   );

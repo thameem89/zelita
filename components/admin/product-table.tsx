@@ -16,12 +16,9 @@ export function ProductTable({
       <div className="product-admin-table" role="table" aria-label="Products">
         <div className="product-admin-table-head" role="row">
           <span>Product</span>
-          <span>SKU</span>
-          <span>Category</span>
-          <span>Pack Size</span>
-          <span>Availability</span>
-          <span>Featured</span>
-          <span>Status</span>
+          <span>Slug</span>
+          <span>PDF</span>
+          <span>Created</span>
           <span>Updated</span>
           <span>Actions</span>
         </div>
@@ -34,15 +31,9 @@ export function ProductTable({
                 <small>{product.shortDescription || product.slug}</small>
               </div>
             </div>
-            <span>{product.sku || "—"}</span>
-            <span>{product.categoryName}</span>
-            <span>{product.packSize}</span>
-            <div className="badge-stack">
-              <StatusBadge status={product.status} />
-              <ActiveBadge active={product.isActive} />
-            </div>
-            <FeaturedBadge featured={product.featured} />
-            <span className="product-status-copy">{product.availability || product.status}</span>
+            <span>{product.slug}</span>
+            <span>{product.pdfUrl ? <a href={product.pdfUrl} target="_blank" rel="noreferrer">View PDF</a> : "Not uploaded"}</span>
+            <small>{formatDate(product.createdAt)}</small>
             <small>{formatDate(product.updatedAt)}</small>
             <div className="compact-actions">
               <a href={`/products/${product.slug}`} target="_blank" rel="noreferrer">View</a>
@@ -71,6 +62,9 @@ export function ProductTable({
             </div>
             <dl>
               <div><dt>Pack</dt><dd>{product.packSize}</dd></div>
+              <div><dt>Slug</dt><dd>{product.slug}</dd></div>
+              <div><dt>PDF</dt><dd>{product.pdfUrl ? <a href={product.pdfUrl} target="_blank" rel="noreferrer">View PDF</a> : "Not uploaded"}</dd></div>
+              <div><dt>Created</dt><dd>{formatDate(product.createdAt)}</dd></div>
               <div><dt>Updated</dt><dd>{formatDate(product.updatedAt)}</dd></div>
             </dl>
             <div className="compact-actions">

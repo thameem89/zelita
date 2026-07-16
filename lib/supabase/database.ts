@@ -30,6 +30,7 @@ export type ProductRow = {
   gallery: string[] | null;
   brochure_url: string | null;
   safety_sheet_url: string | null;
+  pdf_url: string | null;
   featured: boolean | null;
   is_active: boolean | null;
   created_at: string;
