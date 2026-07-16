@@ -3,22 +3,21 @@ import { notFound } from "next/navigation";
 import { Download, FileText, MessageCircle, PackageCheck, ShieldAlert } from "lucide-react";
 import { SiteFooter } from "../../site-footer";
 import { SiteNav } from "../../site-nav";
-import { getZeloxProductBySlug, zeloxProducts } from "../zelox-products";
+import { getZeloxProductBySlug } from "../zelox-products";
 
 type PageProps = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const whatsappNumber = "966567424517";
 
-export function generateStaticParams() {
-  return zeloxProducts.map((product) => ({ slug: product.slug }));
-}
+export const dynamic = "force-dynamic";
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const product = getZeloxProductBySlug(params.slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const product = getZeloxProductBySlug(slug);
 
   if (!product) {
     return {
@@ -35,8 +34,9 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-export default function CleaningChemicalProductPage({ params }: PageProps) {
-  const product = getZeloxProductBySlug(params.slug);
+export default async function CleaningChemicalProductPage({ params }: PageProps) {
+  const { slug } = await params;
+  const product = getZeloxProductBySlug(slug);
 
   if (!product) notFound();
 
@@ -179,4 +179,3 @@ export default function CleaningChemicalProductPage({ params }: PageProps) {
     </main>
   );
 }
-
