@@ -7,7 +7,7 @@ const divisions = [
     copy: "Commercial and industrial chemical solutions for daily cleaning, disinfection, floor care, kitchens and specialised applications.",
     button: "Explore Cleaning Chemicals",
     href: "/cleaning-chemicals",
-    image: "/zelita-cleaning-products.png",
+    image: "/cleaning-chemicals-supply-cart.png",
   },
   {
     title: "Cleaning Equipment",
