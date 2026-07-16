@@ -4,6 +4,7 @@ import { Download, FileText, MessageCircle, PackageCheck, ShieldAlert } from "lu
 import { SiteFooter } from "../../site-footer";
 import { SiteNav } from "../../site-nav";
 import { getZeloxProductBySlug } from "../zelox-products";
+import { SHOW_CLEANING_CHEMICALS_PUBLICLY } from "../../../lib/site-visibility";
 
 type PageProps = {
   params: Promise<{
@@ -16,6 +17,8 @@ const whatsappNumber = "966567424517";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  if (!SHOW_CLEANING_CHEMICALS_PUBLICLY) return { title: "Page Not Found | Zelita" };
+
   const { slug } = await params;
   const product = getZeloxProductBySlug(slug);
 
@@ -35,6 +38,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function CleaningChemicalProductPage({ params }: PageProps) {
+  if (!SHOW_CLEANING_CHEMICALS_PUBLICLY) notFound();
+
   const { slug } = await params;
   const product = getZeloxProductBySlug(slug);
 

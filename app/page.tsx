@@ -1,14 +1,15 @@
 import { SiteFooter } from "./site-footer";
 import { SiteNav } from "./site-nav";
+import { SHOW_CLEANING_CHEMICALS_PUBLICLY } from "../lib/site-visibility";
 
 const divisions = [
-  {
+  ...(SHOW_CLEANING_CHEMICALS_PUBLICLY ? [{
     title: "Cleaning Chemicals",
     copy: "Commercial and industrial chemical solutions for daily cleaning, disinfection, floor care, kitchens and specialised applications.",
     button: "Explore Cleaning Chemicals",
     href: "/cleaning-chemicals",
     image: "/cleaning-chemicals-supply-cart.png",
-  },
+  }] : []),
   {
     title: "Cleaning Equipment",
     copy: "Professional equipment and facility-care essentials for washrooms, waste handling, janitorial work and floor maintenance.",
@@ -55,7 +56,7 @@ export default function Home() {
             solutions for businesses across Saudi Arabia.
           </p>
           <div className="hero-actions">
-            <a className="button primary" href="/cleaning-chemicals">Cleaning Chemicals</a>
+            {SHOW_CLEANING_CHEMICALS_PUBLICLY ? <a className="button primary" href="/cleaning-chemicals">Cleaning Chemicals</a> : null}
             <a className="button secondary" href="/cleaning-equipment">Cleaning Equipment</a>
             <a className="button secondary" href="/request-quote">Request a Quote</a>
           </div>

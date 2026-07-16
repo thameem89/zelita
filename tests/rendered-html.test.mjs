@@ -31,9 +31,17 @@ test("server-renders the Zelita homepage shell", async () => {
   const html = await response.text();
   assert.match(html, /<title>Zelita Ventures Co\. LLC<\/title>/i);
   assert.match(html, /Complete cleaning, industrial &amp; facility/i);
-  assert.match(html, /Explore Cleaning Chemicals/i);
+  assert.doesNotMatch(html, /Explore Cleaning Chemicals/i);
   assert.match(html, /Explore Cleaning Equipment/i);
   assert.match(html, /Request a Quote/i);
+});
+
+test("keeps cleaning chemical pages private while the visibility switch is off", async () => {
+  const listingResponse = await render("/cleaning-chemicals");
+  assert.equal(listingResponse.status, 404);
+
+  const productResponse = await render("/cleaning-chemicals/sample-product");
+  assert.equal(productResponse.status, 404);
 });
 
 test("keeps mock backend services separated from UI storage", async () => {

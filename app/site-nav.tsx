@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { SHOW_CLEANING_CHEMICALS_PUBLICLY } from "../lib/site-visibility";
 
 type SiteNavProps = {
   tone?: "default" | "home";
@@ -11,7 +12,7 @@ type SiteNavProps = {
 const links = [
   ["Home", "/"],
   ["About", "/about"],
-  ["Cleaning Chemicals", "/cleaning-chemicals"],
+  ...(SHOW_CLEANING_CHEMICALS_PUBLICLY ? [["Cleaning Chemicals", "/cleaning-chemicals"]] : []),
   ["Cleaning Equipment", "/cleaning-equipment"],
   ["Services", "/services"],
   ["Contact", "/contact"],

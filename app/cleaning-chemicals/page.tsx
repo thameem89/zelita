@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import {
   Beaker,
   Droplets,
@@ -21,6 +22,7 @@ import {
 import { SiteFooter } from "../site-footer";
 import { SiteNav } from "../site-nav";
 import { zeloxProducts } from "./zelox-products";
+import { SHOW_CLEANING_CHEMICALS_PUBLICLY } from "../../lib/site-visibility";
 
 export const metadata: Metadata = {
   title: "Cleaning Chemicals Supplier in Saudi Arabia | Zelita",
@@ -74,6 +76,8 @@ const benefits = [
 ];
 
 export default function CleaningChemicalsPage() {
+  if (!SHOW_CLEANING_CHEMICALS_PUBLICLY) notFound();
+
   return (
     <main className="division-page">
       <SiteNav />

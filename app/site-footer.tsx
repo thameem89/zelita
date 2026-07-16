@@ -1,4 +1,5 @@
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { SHOW_CLEANING_CHEMICALS_PUBLICLY } from "../lib/site-visibility";
 
 const mapUrl = "https://www.google.com/maps/search/?api=1&query=Building%20No.%209089-5044%205A%20Street%20Al%20Jalawiyah%20District%20Dammam%2032246%20Saudi%20Arabia";
 
@@ -14,7 +15,7 @@ const footerGroups = [
   {
     title: "Divisions",
     links: [
-      ["Cleaning Chemicals", "/cleaning-chemicals"],
+      ...(SHOW_CLEANING_CHEMICALS_PUBLICLY ? [["Cleaning Chemicals", "/cleaning-chemicals"]] : []),
       ["Cleaning Equipment", "/cleaning-equipment"],
     ],
   },
