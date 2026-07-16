@@ -324,7 +324,7 @@ export function DivisionProductForm({ type, mode }: { type: ProductDivision; mod
             <section className="form-section-card">
               <div className="form-section-head">
                 <h2>Documents</h2>
-                <p>Use a PDF URL during the mock phase. Supabase upload can be connected later.</p>
+                <p>Add a PDF URL for the product document.</p>
               </div>
               <div className="form-grid">
                 <label>PDF URL<input value={documentUrl} onChange={(event) => setDocumentUrl(event.target.value)} /></label>

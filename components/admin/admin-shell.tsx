@@ -42,7 +42,7 @@ const pageMeta = [
   {
     match: (pathname: string) => pathname.startsWith("/admin/settings"),
     title: "Settings",
-    description: "Manage mock backend tools and Supabase readiness.",
+    description: "Manage catalog storage and admin settings.",
     action: null,
   },
 ];
@@ -79,7 +79,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   if (pathname === "/admin/login") return <>{children}</>;
-  if (loading) return <LoadingState label="Checking demo admin session..." />;
+  if (loading) return <LoadingState label="Checking admin session..." />;
 
   const meta = getPageMeta(pathname);
 
@@ -109,7 +109,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           ))}
         </nav>
         <div className="admin-sidebar-footer">
-          <span className="demo-badge">Demo Admin</span>
+          <span className="demo-badge">Admin</span>
           <a href="/" target="_blank" rel="noreferrer"><span aria-hidden="true">↗</span> View Website</a>
           <button type="button" onClick={logout}><span aria-hidden="true">×</span> Logout</button>
         </div>
@@ -130,7 +130,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <button className="admin-notification" type="button" aria-label="Notifications">•</button>
             <div className="admin-user">
               <strong>{session?.admin.name ?? "Zelita Admin"}</strong>
-              <span>{session?.admin.email ?? "admin@zelita-demo.com"}</span>
+              <span>{session?.admin.username ?? "admin"}</span>
             </div>
           </div>
         </header>

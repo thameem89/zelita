@@ -26,7 +26,7 @@ export default function EnquiryDetailPage() {
   useEffect(load, [params.id]);
 
   if (loading) return <LoadingState label="Loading enquiry..." />;
-  if (!enquiry) return <main className="admin-page"><EmptyState title="Enquiry not found" message="This mock enquiry does not exist." /></main>;
+  if (!enquiry) return <main className="admin-page"><EmptyState title="Enquiry not found" message="This enquiry does not exist." /></main>;
 
   return (
     <main className="admin-page">

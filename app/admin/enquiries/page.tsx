@@ -34,7 +34,7 @@ export default function AdminEnquiriesPage() {
         <select value={status} onChange={(event) => setStatus(event.target.value)}><option>All</option><option>New</option><option>Contacted</option><option>In Progress</option><option>Closed</option><option>Spam</option></select>
       </section>
       <p className="result-count">{visible.length} enquiries</p>
-      {!visible.length ? <EmptyState title="No enquiries found" message="Try changing the filters or reset mock data in settings." /> : null}
+      {!visible.length ? <EmptyState title="No enquiries found" message="New customer enquiries will appear here." /> : null}
       <div className="admin-table">
         {visible.map((enquiry) => (
           <a className="admin-table-row enquiry-row" href={`/admin/enquiries/${enquiry.id}`} key={enquiry.id}>

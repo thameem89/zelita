@@ -146,7 +146,7 @@ export function ProductForm({ product }: { product?: Product }) {
       <section className="form-section-card">
         <div className="form-section-head">
           <h2>Media and Documents</h2>
-          <p>Use URLs during the mock phase. Uploads will move to Supabase Storage later.</p>
+          <p>Add product images and supporting documents.</p>
         </div>
         <label>Main image URL<input value={form.imageUrl} onChange={(event) => setForm({ ...form, imageUrl: event.target.value })} /></label>
         {form.imageUrl ? <img className="image-preview" src={form.imageUrl} alt="" /> : null}

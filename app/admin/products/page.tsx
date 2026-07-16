@@ -85,7 +85,7 @@ export default function AdminProductsPage() {
   async function confirmDeleteProduct() {
     if (!confirmDelete) return;
     await deleteProduct(confirmDelete.id);
-    setNotice(`${confirmDelete.name} was deleted from mock data.`);
+    setNotice(`${confirmDelete.name} was deleted.`);
     setConfirmDelete(null);
     load();
   }
@@ -119,7 +119,7 @@ export default function AdminProductsPage() {
       {!loading && !products.length ? (
         <EmptyState
           title="No products yet"
-          message="Start the mock catalog by adding Zelita’s first product."
+          message="Start the catalog by adding Zelita’s first product."
           action={<a className="button primary" href="/admin/products/new">Add First Product</a>}
         />
       ) : null}
@@ -156,8 +156,8 @@ export default function AdminProductsPage() {
 
       <ConfirmationDialog
         open={Boolean(confirmDelete)}
-        title="Delete mock product?"
-        message={`This removes ${confirmDelete?.name ?? "the product"} from local mock data. This cannot be undone except by resetting mock data.`}
+        title="Delete product?"
+        message={`This permanently removes ${confirmDelete?.name ?? "the product"} from the catalog.`}
         confirmLabel="Delete"
         onCancel={() => setConfirmDelete(null)}
         onConfirm={confirmDeleteProduct}

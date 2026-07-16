@@ -1,7 +1,7 @@
 export type MockAdmin = {
-  email: string;
+  username: string;
   name: string;
-  role: "Demo Admin";
+  role: "Admin";
 };
 
 export type MockSession = {

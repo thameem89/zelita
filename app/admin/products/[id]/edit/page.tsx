@@ -26,7 +26,7 @@ export default function EditProductPage() {
   }
 
   if (loading) return <LoadingState label="Loading product..." />;
-  if (!product) return <main className="admin-page"><EmptyState title="Product not found" message="This mock product does not exist." /></main>;
+  if (!product) return <main className="admin-page"><EmptyState title="Product not found" message="This product does not exist." /></main>;
 
   return (
     <main className="admin-page product-editor-page">

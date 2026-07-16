@@ -5,9 +5,9 @@ import type { ServiceResult } from "../types/common";
 
 const sessionKey = "admin-session";
 
-export async function mockLogin(email: string, password: string): Promise<ServiceResult<MockSession>> {
-  if (email.trim().toLowerCase() !== mockAdmin.email || password !== mockAdminPassword) {
-    return { ok: false, error: "Invalid email or password." };
+export async function mockLogin(username: string, password: string): Promise<ServiceResult<MockSession>> {
+  if (username.trim().toLowerCase() !== mockAdmin.username || password !== mockAdminPassword) {
+    return { ok: false, error: "Invalid username or password." };
   }
 
   const session: MockSession = {
@@ -36,7 +36,7 @@ export async function resetMockSession() {
 
 export function getMockAdminCredentials() {
   return {
-    email: mockAdmin.email,
+    username: mockAdmin.username,
     password: mockAdminPassword,
   };
 }

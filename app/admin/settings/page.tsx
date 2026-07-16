@@ -14,17 +14,17 @@ export default function AdminSettingsPage() {
 
   return (
     <main className="admin-page">
-      <div className="admin-title"><p className="eyebrow">Settings</p><h1>Mock backend settings</h1></div>
+      <div className="admin-title"><p className="eyebrow">Settings</p><h1>Admin settings</h1></div>
       {message ? <div className="success-message">{message}</div> : null}
       <section className="admin-two-col">
         <article className="admin-panel">
           <h2>Status</h2>
           <p><strong>Supabase config:</strong> {supabaseConfigured ? "Connected with local.env credentials." : "Missing environment variables."}</p>
-          <p><strong>Mock fallback:</strong> Active. If Supabase tables/RLS are not ready, repositories fall back to local mock data.</p>
-          <p><strong>Current mock admin:</strong> {credentials.email}</p>
+          <p><strong>Local fallback:</strong> Active. New catalog records are stored locally when Supabase is unavailable.</p>
+          <p><strong>Current admin:</strong> {credentials.username}</p>
           <div className="quick-actions">
-            <button className="button primary" type="button" onClick={() => setConfirmReset(true)}>Reset Mock Data</button>
-            <button className="button dark" type="button" onClick={async () => { await resetMockSession(); setMessage("Mock session reset. Use Logout or refresh to return to login."); }}>Reset Mock Session</button>
+            <button className="button primary" type="button" onClick={() => setConfirmReset(true)}>Clear Local Data</button>
+            <button className="button dark" type="button" onClick={async () => { await resetMockSession(); setMessage("Admin session reset. Use Logout or refresh to return to login."); }}>Reset Admin Session</button>
           </div>
         </article>
         <article className="admin-panel">
@@ -36,21 +36,21 @@ export default function AdminSettingsPage() {
             <li>Configure authentication</li>
             <li>Configure Row Level Security</li>
             <li>Create storage buckets</li>
-            <li>Replace mock repositories</li>
+            <li>Verify production repositories</li>
             <li>Test production permissions</li>
           </ul>
         </article>
       </section>
       <ConfirmationDialog
         open={confirmReset}
-        title="Reset all mock data?"
-        message="This restores starter products, categories, and enquiries. Demo session is not changed."
-        confirmLabel="Reset data"
+        title="Clear all local data?"
+        message="This removes locally stored products, categories, and enquiries. The admin session is not changed."
+        confirmLabel="Clear data"
         onCancel={() => setConfirmReset(false)}
         onConfirm={async () => {
           await resetMockData();
           setConfirmReset(false);
-          setMessage("Mock products, categories, and enquiries were reset.");
+          setMessage("Local products, categories, and enquiries were cleared.");
         }}
       />
     </main>

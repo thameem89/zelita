@@ -1,4 +1,5 @@
-const namespace = "zelita-mock";
+// Versioned so older browser sessions do not bypass the current admin login.
+const namespace = "zelita-admin-v2";
 
 export function isBrowser() {
   return typeof window !== "undefined" && typeof window.localStorage !== "undefined";

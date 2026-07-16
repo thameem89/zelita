@@ -50,7 +50,7 @@ export default function ProductDetailPage() {
       <main>
         <SiteNav />
         <section className="catalog page-surface">
-          <EmptyState title="Product not found" message="This product may be inactive or unavailable in the mock catalog." action={<a className="button dark" href="/products">Back to Products</a>} />
+          <EmptyState title="Product not found" message="This product may be inactive or currently unavailable." action={<a className="button dark" href="/products">Back to Products</a>} />
         </section>
         <SiteFooter />
       </main>

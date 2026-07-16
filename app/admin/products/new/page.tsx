@@ -7,7 +7,7 @@ export default function NewProductPage() {
         <div>
           <a href="/admin/products">← Products</a>
           <h2>Add product</h2>
-          <p>Create a mock catalog item for review before the Supabase backend phase.</p>
+          <p>Create a new catalog product.</p>
         </div>
       </div>
       <ProductForm />
