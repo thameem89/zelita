@@ -7,24 +7,28 @@ const services = [
     image: "/zelita-service-industrial-cleaning.webp",
     description:
       "Planned cleaning support for warehouses, industrial sites, factories, commercial buildings, and operational facilities.",
+    highlights: ["Deep cleaning and scheduled maintenance", "Support for high-traffic and operational areas", "Site-specific cleaning plans"],
   },
   {
     title: "Glass & Facade Cleaning",
     image: "/zelita-service-facade-cleaning.webp",
     description:
       "Exterior and interior glass care for offices, towers, showrooms, retail spaces, and premium commercial environments.",
+    highlights: ["Internal and external glass cleaning", "Facade presentation and routine care", "Flexible scheduling around site operations"],
   },
   {
     title: "Supply & Replenishment",
     image: "/zelita-service-supply-replenishment.webp",
     description:
       "Routine supply planning for cleaning chemicals, tissues, dispensers, waste products, janitorial tools, and site consumables.",
+    highlights: ["Planned stock replenishment", "Consolidated product supply", "Support for single and multi-site operations"],
   },
   {
     title: "Contract Support",
     image: "/zelita-service-contract-support.webp",
     description:
       "Long-term supply coordination and professional cleaning support for major businesses, projects, and multi-site teams.",
+    highlights: ["Dedicated account coordination", "Scalable support for projects and contracts", "Regular service and supply reviews"],
   },
 ];
 
@@ -55,6 +59,12 @@ export default function ServicesPage() {
           <div className="centered-heading">
             <p className="eyebrow">Service Scope</p>
             <h2>Structured solutions for everyday operations.</h2>
+            <p className="service-section-intro">
+              Whether you manage an office, warehouse, retail property,
+              hospitality site, residential community, or industrial facility,
+              our team can shape the service around your operating hours,
+              cleaning priorities, and procurement requirements.
+            </p>
           </div>
           <div className="service-detail-grid">
             {services.map((service) => (
@@ -63,6 +73,9 @@ export default function ServicesPage() {
                 <div>
                   <h3>{service.title}</h3>
                   <p>{service.description}</p>
+                  <ul>
+                    {service.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
+                  </ul>
                   <a href="/contact">Request service</a>
                 </div>
               </article>
@@ -85,6 +98,16 @@ export default function ServicesPage() {
             <strong>Support</strong>
             <span>Coordinate fulfillment, replenishment, and ongoing communication.</span>
           </article>
+        </div>
+      </section>
+      <section className="page-cta">
+        <div className="home-shell page-cta-inner">
+          <div>
+            <p className="eyebrow">Discuss Your Site</p>
+            <h2>Need a service plan that fits your facility?</h2>
+            <p className="service-cta-copy">Tell us about your site, preferred schedule, current challenges, and required supplies. We will help you define a practical scope.</p>
+          </div>
+          <a className="button primary" href="/contact">Request a consultation</a>
         </div>
       </section>
       <SiteFooter />

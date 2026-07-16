@@ -59,6 +59,13 @@ export default function AboutPage() {
               for everyday cleaning materials, specialized industrial products,
               and professional cleaning contracts.
             </p>
+            <p>
+              Our approach combines international sourcing experience with
+              practical local support. We work closely with procurement teams,
+              facility managers, contractors, and service partners to identify
+              suitable products, maintain dependable supply, and respond to the
+              changing needs of each site across Saudi Arabia.
+            </p>
           </div>
         </div>
       </section>

@@ -1384,6 +1384,7 @@ a:focus-visible {
 .story-grid,
 .contact-page-grid,
 .contact-map-grid {
+  align-items: start;
   display: grid;
   gap: clamp(30px, 5vw, 70px);
   grid-template-columns: minmax(0, 0.88fr) minmax(320px, 1fr);
@@ -1402,6 +1403,16 @@ a:focus-visible {
   font-size: 15px;
   line-height: 1.75;
   text-align: justify;
+}
+
+.story-copy {
+  max-width: 680px;
+}
+
+.story-copy p {
+  color: var(--ink);
+  text-align: left;
+  text-wrap: pretty;
 }
 
 .value-section,
@@ -1471,6 +1482,15 @@ a:focus-visible {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.service-section-intro {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0 auto 30px;
+  max-width: 780px;
+  text-align: center;
+}
+
 .service-detail-grid article {
   background: var(--ivory);
   border: 1px solid rgba(16, 28, 45, 0.12);
@@ -1513,6 +1533,20 @@ a:focus-visible {
   text-align: justify;
 }
 
+.service-detail-grid ul {
+  color: var(--ink);
+  display: grid;
+  font-size: 13px;
+  gap: 8px;
+  line-height: 1.5;
+  margin: 0 0 22px;
+  padding-left: 18px;
+}
+
+.service-detail-grid li::marker {
+  color: var(--red);
+}
+
 .service-detail-grid a {
   color: var(--red);
   font-size: 12px;
@@ -1526,6 +1560,13 @@ a:focus-visible {
   display: block;
   font-size: 24px;
   margin-bottom: 18px;
+}
+
+.service-cta-copy {
+  color: var(--ink);
+  line-height: 1.7;
+  margin: 14px 0 0;
+  max-width: 720px;
 }
 
 .contact-page {
