@@ -2028,6 +2028,154 @@ a:focus-visible {
   }
 }
 
+/* Compact dashboard typography and spacing. */
+.admin-dashboard-page {
+  padding: clamp(18px, 2vw, 28px);
+}
+
+.admin-dashboard-page .admin-title {
+  margin-bottom: 18px;
+}
+
+.admin-dashboard-page .admin-title .eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.admin-dashboard-page .admin-title h1 {
+  font-size: clamp(27px, 2.4vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.admin-dashboard-page .admin-card-grid {
+  gap: 12px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.admin-dashboard-page .admin-card {
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16, 28, 45, 0.04);
+  min-height: 112px;
+  padding: 16px;
+}
+
+.admin-dashboard-page .admin-card span {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.035em;
+  line-height: 1.4;
+}
+
+.admin-dashboard-page .admin-card strong {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  margin-top: 14px;
+}
+
+.admin-dashboard-page .admin-two-col {
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.admin-dashboard-page .admin-panel {
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(16, 28, 45, 0.04);
+  padding: 18px;
+}
+
+.admin-dashboard-page .admin-panel h2,
+.admin-dashboard-page .panel-head h2 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.admin-dashboard-page .panel-head {
+  gap: 12px;
+}
+
+.admin-dashboard-page .panel-head a {
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  padding: 7px 9px;
+  white-space: nowrap;
+}
+
+.admin-dashboard-page .admin-list-row {
+  gap: 12px;
+  padding: 11px 0;
+}
+
+.admin-dashboard-page .admin-list-row strong,
+.admin-dashboard-page .status-overview strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.admin-dashboard-page .admin-list-row small,
+.admin-dashboard-page .status-overview span {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.admin-dashboard-page .status-overview {
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.admin-dashboard-page .quick-actions {
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.admin-dashboard-page .quick-actions .button {
+  font-size: 11px;
+  font-weight: 500;
+  min-height: 36px;
+  padding: 8px 11px;
+}
+
+@media (max-width: 1280px) {
+  .admin-dashboard-page .admin-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .admin-dashboard-page .admin-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-dashboard-page {
+    padding: 16px;
+  }
+
+  .admin-dashboard-page .admin-title h1 {
+    font-size: 27px;
+  }
+
+  .admin-dashboard-page .admin-card {
+    min-height: 100px;
+    padding: 14px;
+  }
+
+  .admin-dashboard-page .admin-card strong {
+    font-size: 25px;
+    margin-top: 10px;
+  }
+}
+
 @media (max-width: 380px) {
   .industrial-hero h1 {
     font-size: 33px;

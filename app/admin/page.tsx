@@ -53,7 +53,7 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <main className="admin-page">
+    <main className="admin-page admin-dashboard-page">
       <div className="admin-title">
         <p className="eyebrow">Dashboard</p>
         <h1>Zelita product division overview</h1>
