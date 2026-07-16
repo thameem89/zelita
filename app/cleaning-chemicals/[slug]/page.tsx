@@ -4,7 +4,10 @@ import { Download, FileText, MessageCircle, PackageCheck, ShieldAlert } from "lu
 import { SiteFooter } from "../../site-footer";
 import { SiteNav } from "../../site-nav";
 import { getZeloxProductBySlug } from "../zelox-products";
-import { SHOW_CLEANING_CHEMICALS_PUBLICLY } from "../../../lib/site-visibility";
+import {
+  SHOW_CLEANING_CHEMICALS_PUBLICLY,
+  SHOW_CLEANING_CHEMICAL_DETAIL_PAGES_PUBLICLY,
+} from "../../../lib/site-visibility";
 
 type PageProps = {
   params: Promise<{
@@ -38,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function CleaningChemicalProductPage({ params }: PageProps) {
-  if (!SHOW_CLEANING_CHEMICALS_PUBLICLY) notFound();
+  if (!SHOW_CLEANING_CHEMICAL_DETAIL_PAGES_PUBLICLY) notFound();
 
   const { slug } = await params;
   const product = getZeloxProductBySlug(slug);

@@ -22,7 +22,10 @@ import {
 import { SiteFooter } from "../site-footer";
 import { SiteNav } from "../site-nav";
 import { zeloxProducts } from "./zelox-products";
-import { SHOW_CLEANING_CHEMICALS_PUBLICLY } from "../../lib/site-visibility";
+import {
+  SHOW_CLEANING_CHEMICALS_PUBLICLY,
+  SHOW_CLEANING_CHEMICAL_DETAIL_PAGES_PUBLICLY,
+} from "../../lib/site-visibility";
 
 export const metadata: Metadata = {
   title: "Cleaning Chemicals Supplier in Saudi Arabia | Zelita",
@@ -51,7 +54,7 @@ const featuredProducts: FeaturedDivisionProduct[] = zeloxProducts.map((product) 
   description: product.shortDescription,
   image: product.image,
   quoteHref: `/request-quote?division=cleaning-chemicals&product=${product.slug}`,
-  detailHref: `/cleaning-chemicals/${product.slug}`,
+  detailHref: SHOW_CLEANING_CHEMICAL_DETAIL_PAGES_PUBLICLY ? `/cleaning-chemicals/${product.slug}` : undefined,
   rangeName: product.rangeName,
   safetyLevel: product.safetyLevel,
   hasSds: Boolean(product.documents?.length),
