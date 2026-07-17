@@ -7767,15 +7767,25 @@ textarea {
   }
 
   .division-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
     min-height: 0;
   }
 
   .division-panel img {
-    aspect-ratio: 2.15;
+    aspect-ratio: 16 / 10;
+    display: block;
+    height: auto;
+    object-position: center;
+    width: 100%;
   }
 
   .division-panel div {
-    padding: 22px 20px;
+    background: #fff;
+    min-width: 0;
+    padding: 24px 20px 26px;
+    position: relative;
   }
 
   .division-panel h3 {
