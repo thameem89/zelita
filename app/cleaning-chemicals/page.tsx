@@ -25,6 +25,7 @@ import { zeloxProducts } from "./zelox-products";
 import {
   SHOW_CLEANING_CHEMICALS_PUBLICLY,
   SHOW_CLEANING_CHEMICAL_DETAIL_PAGES_PUBLICLY,
+  SHOW_FEATURED_CLEANING_CHEMICALS,
 } from "../../lib/site-visibility";
 
 export const metadata: Metadata = {
@@ -96,13 +97,15 @@ export default function CleaningChemicalsPage() {
         secondaryHref="/contact"
       />
       <DivisionCategoryGrid title="Cleaning chemical solutions" categories={categories} />
-      <FeaturedProductShowcase
-        title="Featured chemical products"
-        intro="Zelox product visuals are included as representative branded chemical examples for the current public division page."
-        brandImage="/zelox-logo.png"
-        brandAlt="Zelox cleaning chemicals logo"
-        products={featuredProducts}
-      />
+      {SHOW_FEATURED_CLEANING_CHEMICALS ? (
+        <FeaturedProductShowcase
+          title="Featured chemical products"
+          intro="Zelox product visuals are included as representative branded chemical examples for the current public division page."
+          brandImage="/zelox-logo.png"
+          brandAlt="Zelox cleaning chemicals logo"
+          products={featuredProducts}
+        />
+      ) : null}
       <ApplicationsGrid title="Applications" applications={applications} />
       <DivisionBenefits title="Why choose Zelita chemicals" benefits={benefits} />
       <DivisionEnquiryCTA
